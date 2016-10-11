@@ -2,6 +2,6 @@
 
 include 'Includes/init.php';
 
-$server = new \Server\ChatServer();
-
-$server->start();
+// 启动聊天服务器
+$chat_server = new \Server\ChatServer();
+$chat_server->start();

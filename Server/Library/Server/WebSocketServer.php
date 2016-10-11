@@ -2,7 +2,7 @@
 namespace Server;
 
 use \swoole_websocket_server;
-class Server
+class WebSocketServer
 {
     protected $port = 8888;
     protected $ip = '0.0.0.0';
