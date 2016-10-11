@@ -1,6 +1,7 @@
 # WebChat
 ## 基于Swoole扩展+WebSocket开发的聊天室DEMO
 > 为了保证通信时数据安全,拟通过php模拟http请求到httpserver后通知socketserver端,再以websocket方式返回结果信息给客户端.
+
 ### 目前功能：
  1. 建立socket链接
  2. 登录状态处理
