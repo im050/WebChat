@@ -20,14 +20,15 @@ class WebSocketServer
 
         $this->server->set(
             array(
-                'heartbeat_check_interval' => 1,
-                'heartbeat_idle_time' => 10
+                'heartbeat_check_interval' => 60,
+                'heartbeat_idle_time' => 600
             )
         );
 
         $this->server->on('Open', array($this, 'onOpen'));
         $this->server->on('Message', array($this, 'onMessage'));
         $this->server->on('Close', array($this, 'onClose'));
+        $this->server->on('Request', array($this, 'onRequest'));
 
     }
 
@@ -47,8 +48,24 @@ class WebSocketServer
 
     }
 
+    public function onRequest($request, $response) {
+
+    }
+
     public function onWorkerStart($server, $worker_id) {
 
+    }
+
+    public function getServer() {
+        return $this->server;
+    }
+
+    public function getIp() {
+        return $this->ip;
+    }
+
+    public function getPort() {
+        return $this->port;
     }
 
     public function start() {

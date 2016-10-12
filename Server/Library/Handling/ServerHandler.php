@@ -36,7 +36,6 @@ class ServerHandler
                 break;
         }
 
-        unset($packet);
     }
 
 
@@ -45,11 +44,9 @@ class ServerHandler
         $this->frame = $frame;
 
         $data = $frame->data;
-
         $data = json_decode($data);
 
         $fd = $frame->fd;
-
         $type = $data->type;
 
         if (!isset($data->content))

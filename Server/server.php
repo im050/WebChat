@@ -1,7 +1,7 @@
 <?php
-
 include 'Includes/init.php';
 
-// 启动聊天服务器
-$chat_server = new \Server\ChatServer();
-$chat_server->start();
+// 启动服务
+$main_server = new \Server\MainServer('0.0.0.0', 8888);
+
+$main_server->start();

@@ -2,6 +2,7 @@
 <html charset="utf-8">
 <head>
 	<title>Chat Online</title>
+	<meta charset="utf-8" />
 	<script src="//cdn.bootcss.com/jquery/3.1.1/jquery.min.js"></script>
 	<link href="//cdn.bootcss.com/bootstrap/4.0.0-alpha.3/css/bootstrap.min.css" rel="stylesheet">
 	<script src="//cdn.bootcss.com/bootstrap/4.0.0-alpha.3/js/bootstrap.min.js"></script>
@@ -31,6 +32,9 @@
             </span>
     </div>
 </div>
+<a href="http://kf.workerman.net" web-id="www.im050.com" id="workerman-kefu">在线客服</a>
+<script src="http://s.workerman.net/kf/layui/layui.js"></script>
+<script src="http://s.workerman.net/kf/layui/workerman-kefu.js"></script>
 <script type="text/javascript">
 	$(function(){
 		if (window.WebSocket) {

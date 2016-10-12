@@ -7,6 +7,7 @@ class Client
 
     private $client_id;
     private $client_status = 0;
+    private $fd = 0;
     private $lastPingTime = 0;
     private $server;
     private $user;
@@ -14,6 +15,7 @@ class Client
     public function __construct($client_id, $server) {
         $this->server = $server;
         $this->client_id = $client_id;
+        $this->fd = $client_id;
     }
 
     public function getClientStatus() {
@@ -25,11 +27,7 @@ class Client
     }
 
     public function getServer() {
-        return $this->server;
-    }
-
-    public function setServer($server) {
-        $this->server = $server;
+        return $this->server->getServer();
     }
 
     public function writeObject($object) {
@@ -38,13 +36,11 @@ class Client
     }
 
     public function write($string) {
-        $this->getServer()->push($this->client_id, $string);
+        $this->getServer()->push($this->fd, $string);
     }
 
     public function broadcast($string) {
-        foreach($this->getServer()->connections as $fd) {
-            $this->getServer()->push($fd, $string);
-        }
+        $this->server->broadcast($string);
     }
 
     public function __set($name, $value) {
