@@ -1,11 +1,4 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: linyulin
- * Date: 16/10/12
- * Time: 下午9:32
- */
-
 namespace Handling;
 
 
@@ -24,14 +17,13 @@ class RequestHandler
     }
 
     public function handleRequest() {
-        //测试用,未完成
-        $packet = new PacketCreator();
-        $string = $packet->receiveMessage("Gateway run")->toJSON();
-        foreach($this->server->connections as $fd) {
-            $fdInfo = $this->server->connection_info($fd);
-            if ($fdInfo['websocket_status'] == WEBSOCKET_STATUS_FRAME) {
-                $this->server->push($fd, $string);
-            }
+        $route = strtolower(trim($this->request->server['request_uri'], '/'));
+        switch($route) {
+            //绑定客户端信息
+            case 'bind':
+
+                break;
+            default;
         }
     }
 }

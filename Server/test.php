@@ -1,4 +1,8 @@
 <?php
+$redis = new Redis();
+var_dump($redis->connect('127.0.0.1', 6379, 10));
+
+/*
 $server = new swoole_websocket_server('0.0.0.0', 8888);
 
 $server->set(
@@ -42,4 +46,4 @@ $server->on('request', function($request, $response) use($server){
     $response->end("Hello!");
 });
 
-$server->start();
+$server->start();*/
