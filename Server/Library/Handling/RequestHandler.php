@@ -1,4 +1,9 @@
 <?php
+/**
+ * Http协议请求处理类
+ *
+ * @author: memory<service@im050.com>
+ */
 namespace Handling;
 
 

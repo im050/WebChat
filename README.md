@@ -3,6 +3,11 @@
 > 为了保证通信时数据安全,拟通过php模拟http请求到httpserver后通知socketserver端,再以websocket方式返回结果信息给客户端.
 
 ### 更新记录:
+#### 2016.10.13
+
+* 增加Redis连接类
+* 增加Storage类
+
 #### 2016.10.12
 
 * 增加了Request回调处理类，用于处理用户HTTP请求

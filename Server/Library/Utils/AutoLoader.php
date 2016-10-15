@@ -1,9 +1,8 @@
 <?php
 /**
- * Created by PhpStorm.
- * User: linyulin
- * Date: 16/10/10
- * Time: 上午11:11
+ * 自动加载类
+ *
+ * @author: memory<service@im050.com>
  */
 
 namespace Utils;

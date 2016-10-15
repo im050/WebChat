@@ -1,9 +1,8 @@
 <?php
 /**
- * Created by PhpStorm.
- * User: linyulin
- * Date: 16/10/11
- * Time: 上午1:50
+ * 数据格式处理类
+ *
+ * @author: memory<service@im050.com>
  */
 
 namespace Utils;
@@ -17,21 +16,42 @@ class PacketCreator
 
     }
 
+    /**
+     * 将数据转换为JSON
+     * @return string
+     */
     public function toJSON() {
         return json_encode($this->attributes);
     }
 
+    /**
+     * 群聊信息
+     * @param $content
+     * @return $this
+     */
     public function receiveMessage($content) {
         $this->make('receive_message', $content);
         return $this;
     }
 
+    /**
+     * 快速处理信息
+     * @param $type
+     * @param $content
+     * @return $this
+     */
     public function make($type, $content) {
         $this->attributes['type'] = 'receive_message';
         $this->attributes['content'] = $content;
         return $this;
     }
 
+    /**
+     * 链式设置属性
+     * @param $name
+     * @param $arguments
+     * @return $this
+     */
     public function __call($name, $arguments)
     {
         $pattern = "/^set([A-Z]+[a-zA-z0-9]*)$/";

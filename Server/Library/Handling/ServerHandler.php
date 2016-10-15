@@ -1,7 +1,11 @@
 <?php
+/**
+ * 通信信息处理类
+ *
+ * @author: memory<service@im050.com>
+ */
+
 namespace Handling;
-
-
 use IO\SessionManager;
 use Utils\PacketCreator;
 

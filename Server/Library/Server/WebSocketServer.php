@@ -1,4 +1,9 @@
 <?php
+/**
+ * WebSocket服务类
+ *
+ * @author: memory<service@im050.com>
+ */
 namespace Server;
 
 use \swoole_websocket_server;

@@ -1,18 +1,24 @@
 <?php
-namespace Server;
+/**
+ * 主服务器
+ *
+ * @author: memory<service@im050.com>
+ */
 
+namespace Server;
 
 use Handling\RequestHandler;
 use Handling\ServerHandler;
 use Client\Client;
-use Client\ClientManager;
+use Storages\ClientStorage;
+use Storages\Storage;
 
 class MainServer extends WebSocketServer
 {
     protected $port = 8888;
     protected $ip = '0.0.0.0';
     private $_server_handler = null;
-    private $client = null;
+    private $client = [];
 
     public function __construct($ip = '', $port = '')
     {
@@ -23,12 +29,15 @@ class MainServer extends WebSocketServer
 
     public function onOpen($server, $request)
     {
-        $this->client = new Client($request->fd, $this);
+        $fd = $request->fd;
+        $this->client[$fd] = new Client($fd, $this);
+        $clientStorage = new ClientStorage();
+        $clientStorage->push($fd);
     }
 
     public function onMessage($server, $frame) {
         $fd = $frame->fd;
-        $this->_server_handler->hold($this->client, $frame);
+        $this->_server_handler->hold($this->client[$fd], $frame);
     }
 
     public function onClose($server, $fd)

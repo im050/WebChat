@@ -1,25 +1,75 @@
 <?php
-$redis = new Redis();
-var_dump($redis->connect('127.0.0.1', 6379, 10));
+class Test1 {
+    public static $hello  = self::class;
+
+    public $world = self::class;
+
+    public static function getName() {
+        $class = self::$hello;
+        echo $class . "\r\n";
+    }
+
+    public function getWorld() {
+        echo $this->world . "\r\n";
+    }
+}
+
+class Test2 extends  Test1 {
+    //public static $hello = "Test2";
+    public $world = "Test2";
+
+
+}
+
+/* 通过方法输出 */
+
+Test1::getName(); // Test1
+Test1::$hello = 'Tes22 ' . " \r\n";
+Test2::getName(); // Test1
+/* 直接输出 */
+echo Test1::$hello . "\r\n";  // Test1
+
+echo Test1::$hello . "\r\n";  // Test1
+echo Test2::$hello . "\r\n";  // Test2
+echo "====================\r\n";
+/* function echo */
+$t1 = new Test1();
+$t2 = new Test2();
+
+$t1->getWorld();
+$t2->getWorld();
+
+echo $t1->world . "\r\n";
+echo $t2->world . "\r\n";
+
 
 /*
-$server = new swoole_websocket_server('0.0.0.0', 8888);
+$server = new swoole_websocket_server('0.0.0.0', 8888, SWOOLE_PROCESS);
 
 $server->set(
     array(
-        'worker_num' => 1
+        'worker_num' => 3
     )
 );
 
 $clients = [];
 
-$server->on('open', function($server, $request){
+$string = "abcd";
+$server->on('open', function($server, $request) {
     echo "Connection: " . $request->fd . "\r\n";
+    global $clients;
+    global $string;
+    $string .= "1";
     $clients[$request->fd] = $server;
-    echo "Clients Count : " . count($clients). "\r\n";
+    //echo memory_get_usage() . "\r\n";
+    //echo $server->reactor_num;
+    echo $string . "\r\n";
+    echo "Clients Count : " . count($clients). " Worker_id :" . $server->worker_id . "\r\n";
+    //print_r($server);
 });
 
 $server->on('message', function($server, $frame){
+    //echo memory_get_usage() . "\r\n";
     //echo "Receive: " . $frame->data . "\r\n";
 });
 

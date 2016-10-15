@@ -1,4 +1,9 @@
 <?php
+/**
+ * 客户端
+ *
+ * @author: memory<service@im050.com>
+ */
 namespace Client;
 
 
