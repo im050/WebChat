@@ -26,7 +26,7 @@ class RequestHandler
         switch($route) {
             //绑定客户端信息
             case 'bind':
-
+                var_dump($this->server);
                 break;
             default;
         }

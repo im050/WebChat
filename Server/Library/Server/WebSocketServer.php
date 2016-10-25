@@ -19,14 +19,13 @@ class WebSocketServer
         !empty($ip) && $this->ip = $ip;
         !empty($port) && $this->port = $port;
 
-
-
-        $this->server = new swoole_websocket_server($this->ip, $this->port);
+        $this->server = new swoole_websocket_server($this->ip, $this->port, SWOOLE_PROCESS);
 
         $this->server->set(
             array(
                 'heartbeat_check_interval' => 60,
-                'heartbeat_idle_time' => 600
+                'heartbeat_idle_time' => 600,
+                'worker_num' => 2
             )
         );
 

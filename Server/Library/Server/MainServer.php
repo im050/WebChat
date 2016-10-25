@@ -11,14 +11,13 @@ use Handling\RequestHandler;
 use Handling\ServerHandler;
 use Client\Client;
 use Storages\ClientStorage;
-use Storages\Storage;
 
 class MainServer extends WebSocketServer
 {
     protected $port = 8888;
     protected $ip = '0.0.0.0';
     private $_server_handler = null;
-    private $client = [];
+    private $clients = [];
 
     public function __construct($ip = '', $port = '')
     {
@@ -30,14 +29,19 @@ class MainServer extends WebSocketServer
     public function onOpen($server, $request)
     {
         $fd = $request->fd;
-        $this->client[$fd] = new Client($fd, $this);
+        $this->clients[$fd] = new Client($fd, $this);
         $clientStorage = new ClientStorage();
-        $clientStorage->push($fd);
+        $clientStorage->push($this->clients[$fd]);
     }
 
     public function onMessage($server, $frame) {
+        echo "Server: ".$server->worker_id. " Clinet Fd:";
+        foreach($this->clients as $client) {
+            echo $client->fd . ",";
+        }
+        echo "\r\n";
         $fd = $frame->fd;
-        $this->_server_handler->hold($this->client[$fd], $frame);
+        $this->_server_handler->hold($this->clients[$fd], $frame);
     }
 
     public function onClose($server, $fd)

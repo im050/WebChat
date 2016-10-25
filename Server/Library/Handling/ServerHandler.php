@@ -19,6 +19,8 @@ class ServerHandler
 
     public function handlePacket($fd, $type, $content) {
 
+
+        //var_dump($this->client);
         $packet = new PacketCreator();
 
 //        if ($this->client->getClientStatus() == 0) {
@@ -36,7 +38,11 @@ class ServerHandler
                 $this->client->broadcast($packet->receiveMessage($content)->toJSON());
                 break;
             case 'ping':
-                $this->client->lastPingTime = time();
+
+                break;
+
+            case 'quit':
+                $this->client->getServer()->close($fd);
                 break;
         }
 

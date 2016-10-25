@@ -1,3 +1,7 @@
+<?php
+	$string = "PHPSTROM";
+	echo $string;
+?>
 <!DOCTYPE html>
 <html charset="utf-8">
 <head>

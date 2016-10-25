@@ -36,15 +36,11 @@ class Redis
     }
 
     public function del($value, $count = 0) {
-
+        return $this->_connection->srem($this->_storage_key, $value);
     }
 
     public function all() {
-
-    }
-
-    public function read($key) {
-
+        return $this->_connection->smembers($this->_storage_key);
     }
 
 }
