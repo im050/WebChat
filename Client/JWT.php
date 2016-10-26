@@ -21,9 +21,21 @@ class JWT
 
     public static function decode($jwt, $key, $algo = 'HS256')
     {
+        $segments = explode(".", $jwt);
 
+        $payload = json_decode(JWT::urlsafeB64Decode($segments[1]));
+
+        return $payload;
     }
 
+    /**
+     * 校验jwt中的签名是否正确合法
+     *
+     * @param $jwt
+     * @param $key
+     * @return bool
+     * @throws Exception
+     */
     public static function verify($jwt, $key)
     {
         $segments = explode(".", $jwt);
