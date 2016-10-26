@@ -58,39 +58,18 @@
 </div>
 <script type="text/javascript">
     $(function () {
-        $("input[name=login_btn]").click(function () {
-            var loginUrl = $("form[name=login_form]").attr('action');
-            var storage = window.localStorage;
-            $.ajax({
-                url: loginUrl,
-                data: {
-                    username: $("input[name=username]").val(),
-                    password: $("input[name=password]").val()
-                },
-                type: 'post',
-                dataType: 'json',
-                success: function (data) {
-                    if (data.status == true) {
-                        var token = data.access_token
-                        storage.setItem("access_token", token);
-                        $(".login").fadeOut();
-                    } else {
-                        alert(data.msg);
-                    }
-                },
-                error: function (e) {
-                    alert(e);
-                }
-            });
-        });
-    });
-    $(function () {
+
+        var storage = window.localStorage;
+
         if (window.WebSocket) {
             var socket_address = 'ws://127.0.0.1:8888';
             var socket = new WebSocket(socket_address);
             var heartPacketInterval = null;
             socket.onopen = function () {
-                socket.send(JSON.stringify({type: 'init'}));
+                //socket.send(JSON.stringify({type: 'init'}));
+                if (storage.getItem("access_token") != '') {
+                    socket.send(JSON.stringify({type: 'login', content:{access_token: storage.getItem('access_token')}}));
+                }
                 heartPacketInterval = setInterval(function () {
                     socket.send(JSON.stringify({type: 'ping'}));
                 }, 5000);
@@ -115,6 +94,10 @@
                             alert('Please Login!');
                         }
                         break;
+                    case 'login':
+                        if (data.content.status == true) {
+                            $(".login").fadeOut();
+                        }
                 }
             }
 
@@ -128,14 +111,36 @@
                 socket.send(JSON.stringify(data));
             });
         }
+
+        $("input[name=login_btn]").click(function () {
+            var loginUrl = $("form[name=login_form]").attr('action');
+
+            $.ajax({
+                url: loginUrl,
+                data: {
+                    username: $("input[name=username]").val(),
+                    password: $("input[name=password]").val()
+                },
+                type: 'post',
+                dataType: 'json',
+                success: function (data) {
+                    if (data.status == true) {
+                        var token = data.access_token
+                        storage.setItem("access_token", token);
+                        $(".login").fadeOut();
+                        socket.send(JSON.stringify({type: 'login', content:{access_token: data.access_token}}));
+                    } else {
+                        alert(data.msg);
+                    }
+                },
+                error: function (e) {
+                    alert(e);
+                }
+            });
+        });
+
     });
-    function getCookie(name) {
-        var arr, reg = new RegExp("(^| )" + name + "=([^;]*)(;|$)");
-        if (arr = document.cookie.match(reg))
-            return unescape(arr[2]);
-        else
-            return null;
-    }
+
 </script>
 </body>
 </html>

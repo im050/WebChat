@@ -31,7 +31,7 @@ class PacketCreator
      */
     public function receiveMessage($content) {
         $this->make('receive_message', $content);
-        return $this;
+        return $this->toJSON();
     }
 
     /**
@@ -41,9 +41,9 @@ class PacketCreator
      * @return $this
      */
     public function make($type, $content) {
-        $this->attributes['type'] = 'receive_message';
+        $this->attributes['type'] = $type;
         $this->attributes['content'] = $content;
-        return $this;
+        return $this->toJSON();
     }
 
     /**

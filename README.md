@@ -1,8 +1,14 @@
 # WebChat
 ## 基于Swoole扩展+WebSocket开发的聊天室DEMO
-> 为了保证通信时数据安全,拟通过php模拟http请求到httpserver后通知socketserver端,再以websocket方式返回结果信息给客户端.
+> 采用JWT进行用户授权验证,功能逐步完善中.
 
 ### 更新记录:
+#### 2016.10.26
+
+* 简单处理用户登录过程
+* 增加JWT授权验证过程
+* 修复部分BUG
+
 #### 2016.10.13
 
 * 增加Redis连接类

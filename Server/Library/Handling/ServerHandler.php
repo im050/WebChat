@@ -6,7 +6,8 @@
  */
 
 namespace Handling;
-use IO\SessionManager;
+
+use Auth\JWT;
 use Utils\PacketCreator;
 
 class ServerHandler
@@ -15,30 +16,46 @@ class ServerHandler
     private $frame = null;
     private $client = null;
 
-    public function __construct() {}
+    public function __construct()
+    {
+    }
 
-    public function handlePacket($fd, $type, $content) {
+    public function handlePacket($fd, $type, $content)
+    {
 
-
-        //var_dump($this->client);
         $packet = new PacketCreator();
 
-//        if ($this->client->getClientStatus() == 0) {
-//            $this->client->write($packet->setType('error')->setErrorCode('UNLOGIN')->toJSON());
-//            return FALSE;
-//        }
-
-        switch($type) {
+        switch ($type) {
             case 'init':
                 if ($this->client->getClientStatus() == 0) {
 
                 }
                 break;
             case 'send_message':
-                $this->client->broadcast($packet->receiveMessage($content)->toJSON());
+                if ($this->client->getClientStatus() == 0) {
+                    $this->client->write($packet->setType('error')->setErrorCode('UNLOGIN')->toJSON());
+                } else {
+                    $this->client->broadcast($packet->receiveMessage($content));
+                }
                 break;
             case 'ping':
 
+                break;
+            case 'login':
+                $secret = 'memory';
+                $access_token = $content->access_token;
+                if (JWT::verify($access_token, $secret)) {
+                    $payload = JWT::decode($access_token, $secret);
+                    if (isset($payload->exp) && time() > $payload->exp) {
+                        $msg = $packet->make('login', array('status' => false, 'msg' => '授权过期,请重新登录.'));
+                    } else {
+                        $this->client->setClientStatus(1);
+                        $msg = $packet->make('login', array('status' => true, 'msg' => '登录成功!'));
+                    }
+                } else {
+                    $msg = $packet->make('login', array('status' => false, 'msg' => '授权错误!'));
+                }
+                $this->client->write($msg);
                 break;
 
             case 'quit':
@@ -49,7 +66,8 @@ class ServerHandler
     }
 
 
-    public function hold($client, $frame) {
+    public function hold($client, $frame)
+    {
         $this->client = $client;
         $this->frame = $frame;
 

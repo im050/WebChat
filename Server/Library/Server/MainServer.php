@@ -35,11 +35,11 @@ class MainServer extends WebSocketServer
     }
 
     public function onMessage($server, $frame) {
-        echo "Server: ".$server->worker_id. " Clinet Fd:";
+        //echo "Server: ".$server->worker_id. " Clinet Fd:";
         foreach($this->clients as $client) {
             echo $client->fd . ",";
         }
-        echo "\r\n";
+        //echo "\r\n";
         $fd = $frame->fd;
         $this->_server_handler->hold($this->clients[$fd], $frame);
     }

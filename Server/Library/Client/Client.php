@@ -28,7 +28,7 @@ class Client
     }
 
     public function setClientStatus($status) {
-        $this->client_status;
+        $this->client_status = $status;
     }
 
     public function getServer() {
