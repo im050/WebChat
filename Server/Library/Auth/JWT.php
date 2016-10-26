@@ -81,7 +81,7 @@ class JWT
                 $signature = '';
                 $result = openssl_sign($input, $signature, $key, $algorithm);
                 if (!$result) {
-                    throw new Exception("OpenSSL unable to sign data");
+                    throw new \Exception("OpenSSL unable to sign data");
                 }
                 break;
         }

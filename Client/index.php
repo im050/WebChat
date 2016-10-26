@@ -85,8 +85,9 @@
                 }
                 switch (data.type) {
                     case 'receive_message':
-                        var content = data.content;
-                        $("#msg_list").append("<li>" + content + "</li>");
+                        var content = data.content.message;
+                        var nickchen = data.content.nickchen;
+                        $("#msg_list").append("<li>" + nickchen + ":" + content + "</li>");
                         break;
                     case 'error':
                         var error_code = data.error_code;

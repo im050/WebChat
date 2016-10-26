@@ -9,6 +9,7 @@ namespace Handling;
 
 use Auth\JWT;
 use Utils\PacketCreator;
+use Client\User;
 
 class ServerHandler
 {
@@ -35,7 +36,11 @@ class ServerHandler
                 if ($this->client->getClientStatus() == 0) {
                     $this->client->write($packet->setType('error')->setErrorCode('UNLOGIN')->toJSON());
                 } else {
-                    $this->client->broadcast($packet->receiveMessage($content));
+                    $msg = array(
+                        'message'=>$content,
+                        'nickchen'=>$this->client->getUser()->nickchen
+                    );
+                    $this->client->broadcast($packet->receiveMessage($msg));
                 }
                 break;
             case 'ping':
@@ -50,6 +55,10 @@ class ServerHandler
                         $msg = $packet->make('login', array('status' => false, 'msg' => '授权过期,请重新登录.'));
                     } else {
                         $this->client->setClientStatus(1);
+                        $this->client->setUser(new User());
+                        $this->client->getUser()->nickchen = $payload->nickchen;
+                        $this->client->getUser()->username = $payload->username;
+
                         $msg = $packet->make('login', array('status' => true, 'msg' => '登录成功!'));
                     }
                 } else {

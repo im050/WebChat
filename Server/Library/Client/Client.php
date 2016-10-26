@@ -48,11 +48,19 @@ class Client
         $this->server->broadcast($string);
     }
 
+    public function setUser(User $user) {
+        $this->user = $user;
+    }
+
+    public function getUser() {
+        return $this->user;
+    }
+
     public function __set($name, $value) {
         if (isset($this->$name))
             $this->$name = $value;
         else
-            throw new Exception("Set attributes failed.");
+            throw new \Exception("Set attributes failed.");
     }
 
     public function __get($name) {

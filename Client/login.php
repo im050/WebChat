@@ -21,7 +21,8 @@ if ($res) {
         $payload = [
             'username'=>$username,
             'user_id'=>$res['id'],
-            'exp'=>time() + 10,
+            'nickchen'=>$res['nickchen'],
+            'exp'=>time() + 3600,
             'iat'=>time()
         ];
 

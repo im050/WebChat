@@ -2,7 +2,14 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="e92c7678-3ff6-4b88-a2d4-48227b8c91c2" name="Default" comment="">
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/Server/Library/Client/User.php" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Client/index.php" afterPath="$PROJECT_DIR$/Client/index.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Client/login.php" afterPath="$PROJECT_DIR$/Client/login.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Server/Library/Auth/JWT.php" afterPath="$PROJECT_DIR$/Server/Library/Auth/JWT.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Server/Library/Client/Client.php" afterPath="$PROJECT_DIR$/Server/Library/Client/Client.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Server/Library/Handling/ServerHandler.php" afterPath="$PROJECT_DIR$/Server/Library/Handling/ServerHandler.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Server/Library/Server/MainServer.php" afterPath="$PROJECT_DIR$/Server/Library/Server/MainServer.php" />
     </list>
     <ignored path="chat.iws" />
     <ignored path=".idea/workspace.xml" />
@@ -28,7 +35,7 @@
         <entry file="file://$PROJECT_DIR$/Server/Library/Handling/RequestHandler.php">
           <provider selected="true" editor-type-id="text-editor">
             <state vertical-scroll-proportion="-11.875">
-              <caret line="23" column="30" selection-start-line="23" selection-start-column="30" selection-end-line="23" selection-end-column="30" />
+              <caret line="23" column="0" selection-start-line="23" selection-start-column="0" selection-end-line="24" selection-end-column="0" />
               <folding />
             </state>
           </provider>
@@ -37,7 +44,7 @@
       <file leaf-file-name="PacketCreator.php" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/Server/Library/Utils/PacketCreator.php">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="-25.625">
+            <state vertical-scroll-proportion="-2.0">
               <caret line="45" column="30" selection-start-line="45" selection-start-column="30" selection-end-line="45" selection-end-column="30" />
               <folding />
             </state>
@@ -47,8 +54,8 @@
       <file leaf-file-name="ServerHandler.php" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/Server/Library/Handling/ServerHandler.php">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="-18.25">
-              <caret line="51" column="58" selection-start-line="51" selection-start-column="58" selection-end-line="51" selection-end-column="58" />
+            <state vertical-scroll-proportion="-14.5">
+              <caret line="59" column="0" selection-start-line="59" selection-start-column="0" selection-end-line="60" selection-end-column="0" />
               <folding>
                 <element signature="e#88#101#0#PHP" expanded="true" />
               </folding>
@@ -56,11 +63,31 @@
           </provider>
         </entry>
       </file>
+      <file leaf-file-name="JWT.php" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/Server/Library/Auth/JWT.php">
+          <provider selected="true" editor-type-id="text-editor">
+            <state vertical-scroll-proportion="-51.875">
+              <caret line="83" column="31" selection-start-line="83" selection-start-column="31" selection-end-line="83" selection-end-column="31" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="index.php" pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/Client/index.php">
+          <provider selected="true" editor-type-id="text-editor">
+            <state vertical-scroll-proportion="1.9690266">
+              <caret line="89" column="68" selection-start-line="89" selection-start-column="68" selection-end-line="89" selection-end-column="68" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
       <file leaf-file-name="Client.php" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/Server/Library/Client/Client.php">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="-23.125">
-              <caret line="37" column="38" selection-start-line="37" selection-start-column="38" selection-end-line="37" selection-end-column="38" />
+            <state vertical-scroll-proportion="-18.875">
+              <caret line="55" column="27" selection-start-line="55" selection-start-column="27" selection-end-line="55" selection-end-column="27" />
               <folding>
                 <element signature="e#6#61#0#PHP" expanded="true" />
               </folding>
@@ -68,70 +95,45 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="README.md" pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/README.md">
-          <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.044444446">
-              <caret line="2" column="24" selection-start-line="2" selection-start-column="24" selection-end-line="2" selection-end-column="24" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="ClientStorage.php" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/Server/Library/Storages/ClientStorage.php">
-          <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="-7.625">
-              <caret line="20" column="33" selection-start-line="20" selection-start-column="33" selection-end-line="20" selection-end-column="33" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="JWT.php" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/Client/JWT.php">
-          <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="-4.230769">
-              <caret line="27" column="24" selection-start-line="27" selection-start-column="24" selection-end-line="27" selection-end-column="24" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="login.php" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/Client/login.php">
-          <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="-6.75">
-              <caret line="23" column="30" selection-start-line="23" selection-start-column="30" selection-end-line="23" selection-end-column="30" />
-              <folding>
-                <marker date="1477470322000" expanded="true" signature="244:257" placeholder="SELECT * FRO..." />
-                <marker date="1477470322000" expanded="true" signature="244:258" placeholder="SELECT * FRO..${table()}..." />
-                <marker date="1477470322000" expanded="true" signature="244:307" placeholder="SELECT * FRO..${table('users')}..." />
-                <marker date="1477470322000" expanded="true" signature="244:308" placeholder="SELECT * FRO..${table('users')}..." />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="index.php" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/Client/index.php">
-          <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="-3.9615386">
-              <caret line="130" column="107" selection-start-line="130" selection-start-column="107" selection-end-line="130" selection-end-column="107" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
       <file leaf-file-name="MainServer.php" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/Server/Library/Server/MainServer.php">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="-19.375">
-              <caret line="41" column="10" selection-start-line="41" selection-start-column="10" selection-end-line="41" selection-end-column="10" />
+            <state vertical-scroll-proportion="-13.75">
+              <caret line="36" column="48" selection-start-line="36" selection-start-column="48" selection-end-line="36" selection-end-column="48" />
               <folding>
                 <element signature="e#6#62#0#PHP" expanded="true" />
                 <element signature="e#83#111#0#PHP" expanded="true" />
               </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="User.php" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/Server/Library/Client/User.php">
+          <provider selected="true" editor-type-id="text-editor">
+            <state vertical-scroll-proportion="-10.0">
+              <caret line="21" column="29" selection-start-line="21" selection-start-column="29" selection-end-line="21" selection-end-column="29" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="RedisConnection.php" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/Server/Library/Connections/RedisConnection.php">
+          <provider selected="true" editor-type-id="text-editor">
+            <state vertical-scroll-proportion="-0.625">
+              <caret line="5" column="3" selection-start-line="5" selection-start-column="3" selection-end-line="5" selection-end-column="3" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="WebSocketServer.php" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/Server/Library/Server/WebSocketServer.php">
+          <provider selected="true" editor-type-id="text-editor">
+            <state vertical-scroll-proportion="-0.625">
+              <caret line="22" column="0" selection-start-line="22" selection-start-column="0" selection-end-line="23" selection-end-column="0" />
+              <folding />
             </state>
           </provider>
         </entry>
@@ -173,14 +175,15 @@
         <option value="$PROJECT_DIR$/Client/JWTBuilder.php" />
         <option value="$PROJECT_DIR$/Client/test.php" />
         <option value="$PROJECT_DIR$/Client/JWT.php" />
-        <option value="$PROJECT_DIR$/Server/Library/Auth/JWT.php" />
-        <option value="$PROJECT_DIR$/Server/Library/Server/MainServer.php" />
         <option value="$PROJECT_DIR$/Server/Library/Utils/PacketCreator.php" />
-        <option value="$PROJECT_DIR$/Client/login.php" />
-        <option value="$PROJECT_DIR$/Client/index.php" />
-        <option value="$PROJECT_DIR$/Server/Library/Handling/ServerHandler.php" />
-        <option value="$PROJECT_DIR$/Server/Library/Client/Client.php" />
         <option value="$PROJECT_DIR$/README.md" />
+        <option value="$PROJECT_DIR$/Client/login.php" />
+        <option value="$PROJECT_DIR$/Server/Library/Client/User.php" />
+        <option value="$PROJECT_DIR$/Server/Library/Auth/JWT.php" />
+        <option value="$PROJECT_DIR$/Server/Library/Client/Client.php" />
+        <option value="$PROJECT_DIR$/Server/Library/Handling/ServerHandler.php" />
+        <option value="$PROJECT_DIR$/Server/Library/Server/MainServer.php" />
+        <option value="$PROJECT_DIR$/Client/index.php" />
       </list>
     </option>
   </component>
@@ -651,7 +654,13 @@
       <option name="project" value="LOCAL" />
       <updated>1477470697235</updated>
     </task>
-    <option name="localTasksCounter" value="5" />
+    <task id="LOCAL-00005" summary="Update">
+      <created>1477470715142</created>
+      <option name="number" value="00005" />
+      <option name="project" value="LOCAL" />
+      <updated>1477470715142</updated>
+    </task>
+    <option name="localTasksCounter" value="6" />
     <servers />
   </component>
   <component name="TodoView">
@@ -710,14 +719,6 @@
     <watches-manager />
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/Server/Library/Cache/Cache.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="1" column="16" selection-start-line="1" selection-start-column="16" selection-end-line="1" selection-end-column="16" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/Server/Library/Storages/ClientStorage.php">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
@@ -754,6 +755,7 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
           <caret line="5" column="3" selection-start-line="5" selection-start-column="3" selection-end-line="5" selection-end-column="3" />
+          <folding />
         </state>
       </provider>
     </entry>
@@ -929,13 +931,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/Server/client.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="-1.875">
-          <caret line="3" column="39" selection-start-line="3" selection-start-column="39" selection-end-line="3" selection-end-column="39" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/Server/Library/Storages/Storage.php">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="-11.875">
@@ -954,23 +949,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
           <caret line="4" column="48" selection-start-line="4" selection-start-column="48" selection-end-line="4" selection-end-column="48" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/Server/Library/Connections/RedisConnection.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="5" column="3" selection-start-line="5" selection-start-column="3" selection-end-line="5" selection-end-column="3" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/Server/Library/Server/WebSocketServer.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="-13.75">
-          <caret line="22" column="0" selection-start-line="22" selection-start-column="0" selection-end-line="22" selection-end-column="0" />
-          <folding>
-            <element signature="e#6#70#0#PHP" expanded="false" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -1029,45 +1007,31 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/Server/Library/Auth/JWT.php">
+    <entry file="file://$PROJECT_DIR$/README.md">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="10.0">
-          <caret line="1" column="15" selection-start-line="1" selection-start-column="15" selection-end-line="1" selection-end-column="15" />
+        <state vertical-scroll-proportion="0.044444446">
+          <caret line="2" column="24" selection-start-line="2" selection-start-column="24" selection-end-line="2" selection-end-column="24" />
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/Server/Library/Handling/RequestHandler.php">
+    <entry file="file://$PROJECT_DIR$/Client/login.php">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="-11.875">
-          <caret line="23" column="30" selection-start-line="23" selection-start-column="30" selection-end-line="23" selection-end-column="30" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/Server/Library/Server/MainServer.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="-19.375">
-          <caret line="41" column="10" selection-start-line="41" selection-start-column="10" selection-end-line="41" selection-end-column="10" />
+        <state vertical-scroll-proportion="-7.375">
+          <caret line="24" column="32" selection-start-line="24" selection-start-column="32" selection-end-line="24" selection-end-column="32" />
           <folding>
-            <element signature="e#6#62#0#PHP" expanded="true" />
-            <element signature="e#83#111#0#PHP" expanded="true" />
+            <marker date="1477472923000" expanded="true" signature="244:257" placeholder="SELECT * FRO..." />
+            <marker date="1477472923000" expanded="true" signature="244:258" placeholder="SELECT * FRO..${table()}..." />
+            <marker date="1477472923000" expanded="true" signature="244:307" placeholder="SELECT * FRO..${table('users')}..." />
+            <marker date="1477472923000" expanded="true" signature="244:308" placeholder="SELECT * FRO..${table('users')}..." />
           </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/Server/Library/Utils/PacketCreator.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="-25.625">
-          <caret line="45" column="30" selection-start-line="45" selection-start-column="30" selection-end-line="45" selection-end-column="30" />
-          <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/Client/JWT.php">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="-4.230769">
-          <caret line="27" column="24" selection-start-line="27" selection-start-column="24" selection-end-line="27" selection-end-column="24" />
+        <state vertical-scroll-proportion="-1.4615384">
+          <caret line="27" column="0" selection-start-line="27" selection-start-column="0" selection-end-line="28" selection-end-column="0" />
           <folding />
         </state>
       </provider>
@@ -1080,51 +1044,97 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/Client/login.php">
+    <entry file="file://$PROJECT_DIR$/Server/client.php">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="-6.75">
-          <caret line="23" column="30" selection-start-line="23" selection-start-column="30" selection-end-line="23" selection-end-column="30" />
-          <folding>
-            <marker date="1477470322000" expanded="true" signature="244:257" placeholder="SELECT * FRO..." />
-            <marker date="1477470322000" expanded="true" signature="244:258" placeholder="SELECT * FRO..${table()}..." />
-            <marker date="1477470322000" expanded="true" signature="244:307" placeholder="SELECT * FRO..${table('users')}..." />
-            <marker date="1477470322000" expanded="true" signature="244:308" placeholder="SELECT * FRO..${table('users')}..." />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/Client/index.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="-3.9615386">
-          <caret line="130" column="107" selection-start-line="130" selection-start-column="107" selection-end-line="130" selection-end-column="107" />
+        <state vertical-scroll-proportion="-1.875">
+          <caret line="3" column="0" selection-start-line="3" selection-start-column="0" selection-end-line="4" selection-end-column="0" />
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/Server/Library/Handling/ServerHandler.php">
+    <entry file="file://$PROJECT_DIR$/Server/Library/Server/WebSocketServer.php">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="-18.25">
-          <caret line="51" column="58" selection-start-line="51" selection-start-column="58" selection-end-line="51" selection-end-column="58" />
-          <folding>
-            <element signature="e#88#101#0#PHP" expanded="true" />
-          </folding>
+        <state vertical-scroll-proportion="-0.625">
+          <caret line="22" column="0" selection-start-line="22" selection-start-column="0" selection-end-line="23" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Server/Library/Connections/RedisConnection.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="-0.625">
+          <caret line="5" column="3" selection-start-line="5" selection-start-column="3" selection-end-line="5" selection-end-column="3" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Server/Library/Client/User.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="-10.0">
+          <caret line="21" column="29" selection-start-line="21" selection-start-column="29" selection-end-line="21" selection-end-column="29" />
+          <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/Server/Library/Client/Client.php">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="-23.125">
-          <caret line="37" column="38" selection-start-line="37" selection-start-column="38" selection-end-line="37" selection-end-column="38" />
+        <state vertical-scroll-proportion="-18.875">
+          <caret line="55" column="27" selection-start-line="55" selection-start-column="27" selection-end-line="55" selection-end-column="27" />
           <folding>
             <element signature="e#6#61#0#PHP" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/README.md">
+    <entry file="file://$PROJECT_DIR$/Server/Library/Auth/JWT.php">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.044444446">
-          <caret line="2" column="24" selection-start-line="2" selection-start-column="24" selection-end-line="2" selection-end-column="24" />
+        <state vertical-scroll-proportion="-51.875">
+          <caret line="83" column="31" selection-start-line="83" selection-start-column="31" selection-end-line="83" selection-end-column="31" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Server/Library/Utils/PacketCreator.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="-2.0">
+          <caret line="45" column="30" selection-start-line="45" selection-start-column="30" selection-end-line="45" selection-end-column="30" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Server/Library/Handling/RequestHandler.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="-11.875">
+          <caret line="23" column="0" selection-start-line="23" selection-start-column="0" selection-end-line="24" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Server/Library/Server/MainServer.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="-13.75">
+          <caret line="36" column="48" selection-start-line="36" selection-start-column="48" selection-end-line="36" selection-end-column="48" />
+          <folding>
+            <element signature="e#6#62#0#PHP" expanded="true" />
+            <element signature="e#83#111#0#PHP" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Server/Library/Handling/ServerHandler.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="-14.5">
+          <caret line="59" column="0" selection-start-line="59" selection-start-column="0" selection-end-line="60" selection-end-column="0" />
+          <folding>
+            <element signature="e#88#101#0#PHP" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Client/index.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="1.9690266">
+          <caret line="89" column="68" selection-start-line="89" selection-start-column="68" selection-end-line="89" selection-end-column="68" />
           <folding />
         </state>
       </provider>
