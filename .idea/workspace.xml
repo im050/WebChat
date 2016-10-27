@@ -2,11 +2,7 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="e92c7678-3ff6-4b88-a2d4-48227b8c91c2" name="Default" comment="">
-      <change type="DELETED" beforePath="$PROJECT_DIR$/Client/test.php" afterPath="" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Server/Library/Connections/RedisConnection.php" afterPath="$PROJECT_DIR$/Server/Library/Connections/RedisConnection.php" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Server/Library/Handling/ServerHandler.php" afterPath="$PROJECT_DIR$/Server/Library/Handling/ServerHandler.php" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Server/Library/Utils/Config.php" afterPath="$PROJECT_DIR$/Server/Library/Utils/Config.php" />
     </list>
     <ignored path="chat.iws" />
     <ignored path=".idea/workspace.xml" />
@@ -415,7 +411,13 @@
       <option name="project" value="LOCAL" />
       <updated>1477536420517</updated>
     </task>
-    <option name="localTasksCounter" value="9" />
+    <task id="LOCAL-00009" summary="fix bug">
+      <created>1477537566390</created>
+      <option name="number" value="00009" />
+      <option name="project" value="LOCAL" />
+      <updated>1477537566390</updated>
+    </task>
+    <option name="localTasksCounter" value="10" />
     <servers />
   </component>
   <component name="TodoView">
@@ -467,7 +469,8 @@
     <MESSAGE value="Update" />
     <MESSAGE value="增加配置文件读取" />
     <MESSAGE value="fix" />
-    <option name="LAST_COMMIT_MESSAGE" value="fix" />
+    <MESSAGE value="fix bug" />
+    <option name="LAST_COMMIT_MESSAGE" value="fix bug" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
