@@ -47,7 +47,7 @@ class ServerHandler
 
                 break;
             case 'login':
-                $secret = 'memory';
+                $secret = Config::get('auth.jwt.secret');
                 $access_token = $content->access_token;
                 if (JWT::verify($access_token, $secret)) {
                     $payload = JWT::decode($access_token, $secret);
@@ -58,7 +58,6 @@ class ServerHandler
                         $this->client->setUser(new User());
                         $this->client->getUser()->nickchen = $payload->nickchen;
                         $this->client->getUser()->username = $payload->username;
-
                         $msg = $packet->make('login', array('status' => true, 'msg' => '登录成功!'));
                     }
                 } else {

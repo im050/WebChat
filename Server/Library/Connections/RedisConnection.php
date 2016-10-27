@@ -12,10 +12,14 @@ class RedisConnection
 
     public $redis = null;
 
-    private function __construct()
+    private function __construct($name = 'default')
     {
+
+        $host = Config::get('redis.' . $name . '.host', Config::get('redis.default.host'));
+        $port = Config::get('redis.' . $name . '.port', Config::get('redis.default.port'));
+
         $this->redis = new \Redis();
-        if ($this->redis->connect('0.0.0.0'))
+        if ($this->redis->connect($host, $port))
             return TRUE;
         else
             return FALSE;
@@ -23,7 +27,7 @@ class RedisConnection
 
     public static function getInstance($name = 'default') {
         if (!isset(self::$instance[$name])) {
-            self::$instance[$name] = new self();
+            self::$instance[$name] = new self($name);
         }
         return self::$instance[$name]->redis;
     }
