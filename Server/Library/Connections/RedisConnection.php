@@ -5,6 +5,7 @@
  * @author: memory<service@im050.com>
  */
 namespace Connections;
+use Utils\Config;
 class RedisConnection
 {
 

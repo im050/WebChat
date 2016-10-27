@@ -10,6 +10,7 @@ namespace Handling;
 use Auth\JWT;
 use Utils\PacketCreator;
 use Client\User;
+use Utils\Config;
 
 class ServerHandler
 {

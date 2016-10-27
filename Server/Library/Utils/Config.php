@@ -16,6 +16,7 @@ class Config
     private static $map = [];
 
     public static function get($key, $default = '') {
+
         if (isset(self::$map[$key])) {
             return self::$map[$key];
         } else {
@@ -25,13 +26,13 @@ class Config
                     self::$map[$key] = $default;
                     return $default;
                 }
+                return FALSE;
             }
-            return FALSE;
+            return $value;
         }
     }
 
     public static function createMap($key) {
-
         if (strpos($key, ".") === FALSE) {
             throw new Exception("Config: the parameter lose '.'");
         }
@@ -55,9 +56,7 @@ class Config
 
         if ($value != null)
             self::$map[implode(".",$key)] = $value;
-
         return $value;
-
     }
 
     public static function loadConfig($type) {
