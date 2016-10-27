@@ -2,12 +2,7 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="e92c7678-3ff6-4b88-a2d4-48227b8c91c2" name="Default" comment="">
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/Server/Includes/Config/auth.php" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/Server/Library/Utils/Config.php" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Server/Includes/init.php" afterPath="$PROJECT_DIR$/Server/Includes/init.php" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Server/Library/Connections/RedisConnection.php" afterPath="$PROJECT_DIR$/Server/Library/Connections/RedisConnection.php" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Server/Library/Handling/ServerHandler.php" afterPath="$PROJECT_DIR$/Server/Library/Handling/ServerHandler.php" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Server/server.php" afterPath="$PROJECT_DIR$/Server/server.php" />
     </list>
     <ignored path="chat.iws" />
@@ -50,10 +45,10 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="ServerHandler.php" pinned="false" current-in-tab="true">
+      <file leaf-file-name="ServerHandler.php" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/Server/Library/Handling/ServerHandler.php">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.99557525">
+            <state vertical-scroll-proportion="-28.125">
               <caret line="49" column="54" selection-start-line="49" selection-start-column="54" selection-end-line="49" selection-end-column="54" />
               <folding>
                 <element signature="e#88#101#0#PHP" expanded="true" />
@@ -62,11 +57,11 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="server.php" pinned="false" current-in-tab="false">
+      <file leaf-file-name="server.php" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/Server/server.php">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="-4.375">
-              <caret line="7" column="39" selection-start-line="7" selection-start-column="39" selection-end-line="7" selection-end-column="39" />
+            <state vertical-scroll-proportion="0.022123894">
+              <caret line="1" column="28" selection-start-line="1" selection-start-column="28" selection-end-line="1" selection-end-column="28" />
               <folding />
             </state>
           </provider>
@@ -177,11 +172,11 @@
         <option value="$PROJECT_DIR$/Client/index.php" />
         <option value="$PROJECT_DIR$/Server/Includes/Config/redis.php" />
         <option value="$PROJECT_DIR$/Server/Includes/init.php" />
-        <option value="$PROJECT_DIR$/Server/server.php" />
         <option value="$PROJECT_DIR$/Server/Library/Connections/RedisConnection.php" />
         <option value="$PROJECT_DIR$/Server/Library/Utils/Config.php" />
         <option value="$PROJECT_DIR$/Server/Includes/Config/auth.php" />
         <option value="$PROJECT_DIR$/Server/Library/Handling/ServerHandler.php" />
+        <option value="$PROJECT_DIR$/Server/server.php" />
       </list>
     </option>
   </component>
@@ -612,7 +607,13 @@
       <option name="project" value="LOCAL" />
       <updated>1477474322966</updated>
     </task>
-    <option name="localTasksCounter" value="7" />
+    <task id="LOCAL-00007" summary="增加配置文件读取">
+      <created>1477536389848</created>
+      <option name="number" value="00007" />
+      <option name="project" value="LOCAL" />
+      <updated>1477536389848</updated>
+    </task>
+    <option name="localTasksCounter" value="8" />
     <servers />
   </component>
   <component name="TodoView">
@@ -662,7 +663,8 @@
   <component name="VcsManagerConfiguration">
     <MESSAGE value="Something changes" />
     <MESSAGE value="Update" />
-    <option name="LAST_COMMIT_MESSAGE" value="Update" />
+    <MESSAGE value="增加配置文件读取" />
+    <option name="LAST_COMMIT_MESSAGE" value="增加配置文件读取" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -1016,14 +1018,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/Server/server.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="-4.375">
-          <caret line="7" column="39" selection-start-line="7" selection-start-column="39" selection-end-line="7" selection-end-column="39" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/Server/Library/Utils/Config.php">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="-4.375">
@@ -1092,11 +1086,19 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/Server/Library/Handling/ServerHandler.php">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.99557525">
+        <state vertical-scroll-proportion="-28.125">
           <caret line="49" column="54" selection-start-line="49" selection-start-column="54" selection-end-line="49" selection-end-column="54" />
           <folding>
             <element signature="e#88#101#0#PHP" expanded="true" />
           </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Server/server.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.022123894">
+          <caret line="1" column="28" selection-start-line="1" selection-start-column="28" selection-end-line="1" selection-end-column="28" />
+          <folding />
         </state>
       </provider>
     </entry>
