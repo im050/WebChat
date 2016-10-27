@@ -8,6 +8,7 @@
 namespace Handling;
 
 use Auth\JWT;
+use Storages\RecordStorage;
 use Utils\PacketCreator;
 use Client\User;
 use Utils\Config;
@@ -34,14 +35,20 @@ class ServerHandler
                 }
                 break;
             case 'send_message':
+
+                $recordStorage = RecordStorage::getInstance(1);
+
                 if ($this->client->getClientStatus() == 0) {
                     $this->client->write($packet->setType('error')->setErrorCode('UNLOGIN')->toJSON());
                 } else {
                     $msg = array(
                         'message'=>$content,
-                        'nickchen'=>$this->client->getUser()->nickchen
+                        'nickchen'=>$this->client->getUser()->nickchen,
+                        'time'=>time()
                     );
-                    $this->client->broadcast($packet->receiveMessage($msg));
+                    $finalMessage = $packet->receiveMessage($msg);
+                    $recordStorage->push($finalMessage);
+                    $this->client->broadcast($finalMessage);
                 }
                 break;
             case 'ping':
