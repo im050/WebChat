@@ -42,7 +42,7 @@ class ServerHandler
                     $this->client->write($packet->setType('error')->setErrorCode('UNLOGIN')->toJSON());
                 } else {
                     $msg = array(
-                        'message'=>$content,
+                        'message'=>safeStr($content),
                         'nickchen'=>$this->client->getUser()->nickchen,
                         'time'=>time()
                     );
