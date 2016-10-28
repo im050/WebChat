@@ -44,6 +44,7 @@ class ServerHandler
                     $msg = array(
                         'message'=>safeStr($content),
                         'nickchen'=>$this->client->getUser()->nickchen,
+                        'avatar'=>$this->client->getUser()->avatar,
                         'time'=>time()
                     );
                     $finalMessage = $packet->receiveMessage($msg);
@@ -66,6 +67,7 @@ class ServerHandler
                         $this->client->setUser(new User());
                         $this->client->getUser()->nickchen = $payload->nickchen;
                         $this->client->getUser()->username = $payload->username;
+                        $this->client->getUser()->avatar = $payload->avatar;
                         $msg = $packet->make('login', array('status' => true, 'msg' => '登录成功!'));
                     }
                 } else {

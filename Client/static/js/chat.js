@@ -8,12 +8,19 @@ Chat = function (options) {
     var storage = window.localStorage;
     var heartPacketInterval = null;
 
+
     this.options = {
         mlc_id: '#msg_list' //message list container id
     };
 
     this.options = $.extend(this.options, options);
 
+    var messageList = new Vue({
+        el: this.options.mlc_id,
+        data: {
+            list : []
+        }
+    });
 
     this.init = function () {
         var _this = this;
@@ -52,12 +59,36 @@ Chat = function (options) {
      * @param data
      */
     this.printMessage = function (data) {
-        var nickchen = data.nickchen;
-        var avatar = data.avatar;
-        var message = data.message;
-        var time = new Date(parseInt(data.time) * 1000).format("yyyy-MM-dd h:m:s");
-        $(this.options.mlc_id).append("<li>" + nickchen + ":" + message + " 时间:" + time + "</li>");
+
+        var _this = this;
+
+        data.time = new Date(parseInt(data.time * 1000)).format("yyyy-MM-dd h:m:s");
+
+        messageList.$data.list.push(data);
+
+        messageList.$nextTick(function(){
+            _this.scrollToEnd();
+        });
+        //console.log(data);
+        //var nickchen = data.nickchen;
+        //var avatar = data.avatar;
+        //var message = data.message;
+        //var avatar = data.avatar;
+        //var time = new Date(parseInt(data.time) * 1000).format("yyyy-MM-dd h:m:s");
+        //$(this.options.mlc_id).append("<li><img src='"+avatar+"' width='32' height='32' />" + nickchen + ":" + message + " 时间:" + time + "</li>");
     };
+
+    /**
+     * 聊天窗滚动
+     */
+    this.scrollToEnd = function() {
+        var screen = $(this.options.mlc_id).parent();
+        try {
+            $(screen).scrollTop(screen[0].scrollHeight);
+        }catch(e){
+            console.log(e);
+        }
+    }
 
     /**
      * 发送信息到服务器
@@ -94,6 +125,9 @@ Chat = function (options) {
 
                     _this.printMessage(message);
                 }
+
+                _this.scrollToEnd();
+
             }
         });
     };

@@ -12,7 +12,7 @@ namespace Client;
 class User
 {
 
-    private $username, $nickchen;
+    private $username, $nickchen, $avatar;
 
     public function __construct()
     {

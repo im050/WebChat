@@ -6,6 +6,7 @@
     <script src="//cdn.bootcss.com/jquery/3.1.1/jquery.min.js"></script>
     <link href="//cdn.bootcss.com/bootstrap/4.0.0-alpha.3/css/bootstrap.min.css" rel="stylesheet">
     <script src="//cdn.bootcss.com/bootstrap/4.0.0-alpha.3/js/bootstrap.min.js"></script>
+    <script src="//cdn.bootcss.com/vue/2.0.3/vue.min.js"></script>
     <style>
         .chat {
             width: 100%;
@@ -32,13 +33,32 @@
             padding: 20px;
             margin: -150px 0 0 -150px;
         }
+
+        .message-list {
+            margin: 0;
+            padding: 0;
+        }
+
+        .message-list li {
+            list-style: none;
+            border: 1px solid #ccc;
+            margin: 10px 0;
+        }
+
     </style>
 </head>
 <body>
 <div class="container">
     <div class="chat">
-        <ul id="msg_list">
-
+        <ul id="msg_list" class="message-list">
+            <li v-for="msg in list">
+                <div class="face">
+                    <img :src="msg.avatar" width="32" height="32" />
+                </div>
+                <div class="nickchen">{{ msg.nickchen }}</div>
+                <div class="content">{{ msg.message }}</div>
+                <div class="time">{{ msg.time }}</div>
+            </li>
         </ul>
     </div>
     <div class="input-group">
@@ -60,5 +80,6 @@
 <script src="static/js/server.js"></script>
 <script src="static/js/chat.js"></script>
 <script src="static/js/common.js"></script>
+
 </body>
 </html>

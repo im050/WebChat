@@ -22,6 +22,13 @@ $(function () {
         chat.sendMessage(data);
     });
 
+    //回车发送事件
+    $("input[name=msg]").keypress(function(event){
+       if (event.keyCode == 13) {
+           $("[name=send]").click();
+       }
+    });
+
     //登录按钮事件绑定
     $("input[name=login_btn]").click(function () {
         var loginUrl = $("form[name=login_form]").attr('action');
