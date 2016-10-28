@@ -22,6 +22,7 @@ if ($res) {
             'username'=>$username,
             'user_id'=>$res['id'],
             'nickchen'=>$res['nickchen'],
+            'avatar'=>$res['avatar'],
             'exp'=>time() + 3600,
             'iat'=>time()
         ];

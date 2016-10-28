@@ -17,7 +17,6 @@
             overflow: auto;
             margin-bottom: 30px;
         }
-        
 
         .login {
             background: rgba(255, 255, 255, 0.7);
@@ -58,142 +57,8 @@
         <p><input type="button" name="login_btn" class="btn btn-primary" value="Login"/></p>
     </form>
 </div>
-<script type="text/javascript">
-    $(function () {
-
-        var recordUrl = 'http://localhost:8888/record/';
-        var storage = window.localStorage;
-
-        function loadMessageRecord(room_id) {
-            $.ajax({
-                url: recordUrl,
-                dataType: 'jsonp',
-                data: {
-                    room_id : room_id
-                },
-                type: 'get',
-                success: function(msg){
-                    var length = msg.length;
-                    for(var i = (length - 1); i>=0; i--) {
-                        var nickchen = msg[i].content.nickchen;
-                        var content = msg[i].content.message;
-                        var msg_time = new Date(parseInt(msg[i].content.time * 1000)).format("yyyy-MM-dd h:m:s");
-                        $("#msg_list").append("<li>" + nickchen + ":" + content + " 时间:" + msg_time + "</li>");
-                    }
-                }
-            });
-        }
-
-        if (window.WebSocket) {
-            var socket_address = 'ws://127.0.0.1:8888';
-            var socket = new WebSocket(socket_address);
-            var heartPacketInterval = null;
-            socket.onopen = function () {
-                if (storage.getItem("access_token") != '') {
-                    socket.login(storage.getItem('access_token'));
-                }
-                heartPacketInterval = setInterval(function () {
-                    socket.send(JSON.stringify({type: 'ping'}));
-                }, 5000);
-            }
-
-            WebSocket.prototype.login = function (token) {
-                this.send(JSON.stringify({type: 'login', content: {access_token: token}}));
-            }
-
-            socket.onmessage = function (event) {
-                var data = {};
-                try {
-                    data = JSON.parse(event.data);
-                } catch (e) {
-                    data.type = 'null';
-                    data.content = event.data;
-                }
-                switch (data.type) {
-                    case 'receive_message':
-                        var content = data.content.message;
-                        var nickchen = data.content.nickchen;
-                        var time = data.content.time;
-                        var date = new Date(parseInt(time) * 1000);
-                        var msg_time = date.format("yyyy-MM-dd h:m:s");
-                        $("#msg_list").append("<li>" + nickchen + ":" + content + " 时间:" + msg_time + "</li>");
-                        break;
-                    case 'error':
-                        var error_code = data.error_code;
-                        if (error_code == 'UNLOGIN') {
-                            alert('Please Login!');
-                        }
-                        break;
-                    case 'login':
-                        if (data.content.status == true) {
-                            loadMessageRecord(1);
-                            $(".login").fadeOut();
-                        }
-                }
-            }
-
-            $("[name=send]").click(function () {
-                var msg = $("[name=msg]").val();
-                var data = {
-                    type: 'send_message',
-                    content: msg
-                }
-                $("[name=msg]").val('');
-                socket.send(JSON.stringify(data));
-            });
-        }
-
-        $("input[name=login_btn]").click(function () {
-            var loginUrl = $("form[name=login_form]").attr('action');
-
-            $.ajax({
-                url: loginUrl,
-                data: {
-                    username: $("input[name=username]").val(),
-                    password: $("input[name=password]").val()
-                },
-                type: 'post',
-                dataType: 'json',
-                success: function (data) {
-                    if (data.status == true) {
-                        var token = data.access_token
-                        storage.setItem("access_token", token);
-                        $(".login").fadeOut();
-                        socket.login(token);
-                    } else {
-                        alert(data.msg);
-                    }
-                },
-                error: function (e) {
-                    alert(e);
-                }
-            });
-        });
-
-        Date.prototype.format = function (format) {
-            var date = {
-                "M+": this.getMonth() + 1,
-                "d+": this.getDate(),
-                "h+": this.getHours(),
-                "m+": this.getMinutes(),
-                "s+": this.getSeconds(),
-                "q+": Math.floor((this.getMonth() + 3) / 3),
-                "S+": this.getMilliseconds()
-            };
-            if (/(y+)/i.test(format)) {
-                format = format.replace(RegExp.$1, (this.getFullYear() + '').substr(4 - RegExp.$1.length));
-            }
-            for (var k in date) {
-                if (new RegExp("(" + k + ")").test(format)) {
-                    format = format.replace(RegExp.$1, RegExp.$1.length == 1
-                        ? date[k] : ("00" + date[k]).substr(("" + date[k]).length));
-                }
-            }
-            return format;
-        }
-
-    });
-
-</script>
+<script src="static/js/server.js"></script>
+<script src="static/js/chat.js"></script>
+<script src="static/js/common.js"></script>
 </body>
 </html>
