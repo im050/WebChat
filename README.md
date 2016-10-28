@@ -1,5 +1,7 @@
 # WebChat
 ## 基于Swoole扩展+WebSocket开发的聊天室DEMO
+
+[![Join the chat at https://gitter.im/im050/Lobby](https://badges.gitter.im/im050/Lobby.svg)](https://gitter.im/im050/Lobby?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
 > 采用JWT进行用户授权验证,功能逐步完善中.
 
 ### 更新记录:
