@@ -64,20 +64,25 @@
         var recordUrl = 'http://localhost:8888/record/';
         var storage = window.localStorage;
 
-        $.ajax({
-            url: recordUrl,
-            dataType: 'jsonp',
-            type: 'get',
-            success: function(msg){
-                var length = msg.length;
-                for(var i = (length - 1); i>=0; i--) {
-                    var nickchen = msg[i].content.nickchen;
-                    var content = msg[i].content.message;
-                    var msg_time = new Date(parseInt(msg[i].content.time * 1000)).format("yyyy-MM-dd h:m:s");
-                    $("#msg_list").append("<li>" + nickchen + ":" + content + " 时间:" + msg_time + "</li>");
+        function loadMessageRecord(room_id) {
+            $.ajax({
+                url: recordUrl,
+                dataType: 'jsonp',
+                data: {
+                    room_id : room_id
+                },
+                type: 'get',
+                success: function(msg){
+                    var length = msg.length;
+                    for(var i = (length - 1); i>=0; i--) {
+                        var nickchen = msg[i].content.nickchen;
+                        var content = msg[i].content.message;
+                        var msg_time = new Date(parseInt(msg[i].content.time * 1000)).format("yyyy-MM-dd h:m:s");
+                        $("#msg_list").append("<li>" + nickchen + ":" + content + " 时间:" + msg_time + "</li>");
+                    }
                 }
-            }
-        });
+            });
+        }
 
         if (window.WebSocket) {
             var socket_address = 'ws://127.0.0.1:8888';
@@ -121,6 +126,7 @@
                         break;
                     case 'login':
                         if (data.content.status == true) {
+                            loadMessageRecord(1);
                             $(".login").fadeOut();
                         }
                 }

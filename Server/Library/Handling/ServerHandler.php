@@ -71,7 +71,10 @@ class ServerHandler
                 } else {
                     $msg = $packet->make('login', array('status' => false, 'msg' => '授权错误!'));
                 }
+                //更新ClientStorage里的client
+                $this->client->save();
                 $this->client->write($msg);
+
                 break;
 
             case 'quit':

@@ -8,7 +8,6 @@ namespace Handling;
 
 
 use Storages\RecordStorage;
-use Utils\PacketCreator;
 
 class RequestHandler
 {
@@ -30,7 +29,8 @@ class RequestHandler
                 var_dump($this->server);
                 break;
             case 'record':
-                $recordStorage = RecordStorage::getInstance(1);
+                $id = $this->request->get['room_id'];
+                $recordStorage = RecordStorage::getInstance($id);
                 $recordData = ($recordStorage->range());
                 $callback = $this->request->get['callback'];
                 $html = '[';

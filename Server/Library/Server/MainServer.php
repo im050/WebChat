@@ -11,6 +11,7 @@ use Handling\RequestHandler;
 use Handling\ServerHandler;
 use Client\Client;
 use Storages\ClientStorage;
+use Utils\Config;
 
 class MainServer extends WebSocketServer
 {
@@ -21,6 +22,13 @@ class MainServer extends WebSocketServer
 
     public function __construct($ip = '', $port = '')
     {
+        if ($ip == '')
+            $ip = Config::get('websocket.host', '0.0.0.0');
+
+        if ($port == '') {
+            $port = Config::get('websocket.port');
+        }
+
         parent::__construct($ip, $port);
         $this->_server_handler = new ServerHandler();
 

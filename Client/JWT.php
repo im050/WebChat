@@ -1,5 +1,4 @@
 <?php
-
 /**
  * JWT
  *
@@ -19,6 +18,15 @@ class JWT
         'RS256' => array('openssl', 'SHA256'),
     );
 
+    /**
+     * 解码过程
+     * 将会返回jwt中的payload
+     *
+     * @param $jwt
+     * @param $key
+     * @param string $algo
+     * @return mixed
+     */
     public static function decode($jwt, $key, $algo = 'HS256')
     {
         $segments = explode(".", $jwt);
@@ -56,6 +64,15 @@ class JWT
 
     }
 
+    /**
+     * jwt编码过程
+     *
+     * @param $payload
+     * @param $key
+     * @param string $algo
+     * @return string
+     * @throws \Exception
+     */
     public static function encode($payload, $key, $algo = 'HS256')
     {
         $header = [
@@ -70,6 +87,16 @@ class JWT
         return $output . '.' . JWT::urlsafeB64Encode($sign);
     }
 
+    /**
+     * 签名生成过程
+     * 返回的签名未进行base64编码
+     *
+     * @param $input
+     * @param $key
+     * @param string $algo
+     * @return bool|string
+     * @throws \Exception
+     */
     public static function sign($input, $key, $algo = 'HS256')
     {
         list($function, $algorithm) = JWT::$supported_algs[$algo];
@@ -81,7 +108,7 @@ class JWT
                 $signature = '';
                 $result = openssl_sign($input, $signature, $key, $algorithm);
                 if (!$result) {
-                    throw new Exception("OpenSSL unable to sign data");
+                    throw new \Exception("OpenSSL unable to sign data");
                 }
                 break;
         }
@@ -89,6 +116,12 @@ class JWT
 
     }
 
+    /**
+     * base64解码
+     *
+     * @param $input
+     * @return string
+     */
     public static function urlsafeB64Decode($input)
     {
         $remainder = strlen($input) % 4;
@@ -99,6 +132,13 @@ class JWT
         return base64_decode(strtr($input, '-_', '+/'));
     }
 
+    /**
+     * base64解码
+     * 为解决URL中=+/符号问题,重新封装了base64编码
+     *
+     * @param $input
+     * @return mixed
+     */
     public static function urlsafeB64Encode($input)
     {
         return str_replace('=', '', strtr(base64_encode($input), '+/', '-_'));

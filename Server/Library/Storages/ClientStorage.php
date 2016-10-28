@@ -41,6 +41,11 @@ class ClientStorage
         $this->_cache->set('client_' . $fd, serialize($client));
     }
 
+    public function update(Client $client) {
+        $fd = $client->fd;
+        return $this->_cache->set('client_' . $fd, serialize($client));
+    }
+
     public function get($fd) {
         return unserialize($this->_cache->get('client_' . $fd));
     }
