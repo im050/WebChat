@@ -35,20 +35,26 @@ class ServerHandler
                 }
                 break;
             case 'send_message':
-
                 $recordStorage = RecordStorage::getInstance(1);
 
                 if ($this->client->getClientStatus() == 0) {
                     $this->client->write($packet->setType('error')->setErrorCode('UNLOGIN')->toJSON());
                 } else {
-                    $msg = array(
-                        'message'=>safeStr($content),
+                    $message = trim(safeStr($content));
+
+                    if ($message == '') {
+                        return false;
+                    }
+
+                    $frame = array(
+                        'message'=>$message,
                         'nickchen'=>$this->client->getUser()->nickchen,
                         'avatar'=>$this->client->getUser()->avatar,
                         'user_id'=>$this->client->getUser()->user_id,
                         'time'=>time()
                     );
-                    $finalMessage = $packet->receiveMessage($msg);
+
+                    $finalMessage = $packet->receiveMessage($frame);
                     $recordStorage->push($finalMessage);
                     $this->client->broadcast($finalMessage);
                 }

@@ -4,10 +4,10 @@
     <title>Chat Online</title>
     <meta charset="utf-8"/>
     <meta name="format-detection" content="telephone=no"/>
-    <meta name="apple-mobile-app-status-bar-style" content="black" />
-    <meta name="apple-touch-fullscreen" content="YES" />
-    <meta name="apple-mobile-web-app-capable" content="yes" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0,  minimum-scale=1.0, maximum-scale=1.0" />
+    <meta name="apple-mobile-app-status-bar-style" content="black"/>
+    <meta name="apple-touch-fullscreen" content="YES"/>
+    <meta name="apple-mobile-web-app-capable" content="yes"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0,  minimum-scale=1.0, maximum-scale=1.0"/>
     <script src="//cdn.bootcss.com/jquery/3.1.1/jquery.min.js"></script>
     <link href="//cdn.bootcss.com/bootstrap/4.0.0-alpha.3/css/bootstrap.min.css" rel="stylesheet">
     <script src="//cdn.bootcss.com/bootstrap/4.0.0-alpha.3/js/bootstrap.min.js"></script>
@@ -118,8 +118,8 @@
 
         .content:after {
             content: "";
-            border-color: transparent #fff transparent  transparent ;
-            top:  10px;
+            border-color: transparent #fff transparent transparent;
+            top: 10px;
             border-style: solid;
             border-width: 5px;
             position: absolute;
@@ -152,7 +152,12 @@
         .clearfix {
             zoom: 1;
             visibility: hidden;
-            clear:both;
+            clear: both;
+        }
+
+        .message-input {
+            width: auto;
+            margin: 5px 20px;
         }
 
     </style>
@@ -177,11 +182,13 @@
         </ul>
     </div>
     <div class="clearfix"></div>
-    <div class="chat-panel input-group">
-        <input type="text" name="msg" class="form-control">
+    <div class="chat-panel ">
+        <div class="message-input input-group">
+            <input type="text" name="msg" class="form-control">
             <span class="input-group-btn">
-                <button name="send" class="btn btn-default" type="button">Send</button>
+                <button name="send" class="btn btn-primary" type="button">Send</button>
             </span>
+        </div>
     </div>
 </div>
 <div class="login">

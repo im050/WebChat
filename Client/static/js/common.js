@@ -17,6 +17,9 @@ $(function () {
     //发送按钮事件绑定
     $("[name=send]").click(function () {
         var msg = $("[name=msg]").val();
+        if ($.trim(msg) == '') {
+            return false;
+        }
         var data = {
             type: 'send_message',
             content: msg

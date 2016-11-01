@@ -97,6 +97,7 @@ Chat = function (options) {
     this.scrollToEnd = function() {
         var screen = $(this.options.mlc_id).parent();
         try {
+            console.log($(screen).scrollTop() + " " + screen[0].scrollHeight);
             $(screen).scrollTop(screen[0].scrollHeight);
         }catch(e){
             console.log(e);
