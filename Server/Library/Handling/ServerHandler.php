@@ -45,6 +45,7 @@ class ServerHandler
                         'message'=>safeStr($content),
                         'nickchen'=>$this->client->getUser()->nickchen,
                         'avatar'=>$this->client->getUser()->avatar,
+                        'user_id'=>$this->client->getUser()->user_id,
                         'time'=>time()
                     );
                     $finalMessage = $packet->receiveMessage($msg);
@@ -64,11 +65,16 @@ class ServerHandler
                         $msg = $packet->make('login', array('status' => false, 'msg' => '授权过期,请重新登录.'));
                     } else {
                         $this->client->setClientStatus(1);
-                        $this->client->setUser(new User());
-                        $this->client->getUser()->nickchen = $payload->nickchen;
-                        $this->client->getUser()->username = $payload->username;
-                        $this->client->getUser()->avatar = $payload->avatar;
-                        $msg = $packet->make('login', array('status' => true, 'msg' => '登录成功!'));
+                        $this->client->setUser(new User($payload));
+                        $data = [
+                            'status'=>true,
+                            'msg'=>'登录成功!',
+                            'user'=>[
+                                'user_id'=>$payload->user_id,
+                                'nickchen'=>$payload->nickchen
+                            ]
+                        ];
+                        $msg = $packet->make('login', $data);
                     }
                 } else {
                     $msg = $packet->make('login', array('status' => false, 'msg' => '授权错误!'));

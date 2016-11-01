@@ -1,14 +1,17 @@
+var storage = window.localStorage;
+
 $(function () {
 
     var recordUrl = 'http://localhost:8888/record/';
     var websocket_uri = 'ws://127.0.0.1:8888';
-    var storage = window.localStorage;
+
 
     //初始化聊天室
     var chat = new Chat({
         'url': websocket_uri,
         'record_url': recordUrl
     });
+
     chat.init();
 
     //发送按钮事件绑定
@@ -62,5 +65,8 @@ $(function () {
         }
         return format;
     }
+
+    //
+
 
 });

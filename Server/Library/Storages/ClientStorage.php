@@ -41,6 +41,11 @@ class ClientStorage
         $this->_cache->set('client_' . $fd, serialize($client));
     }
 
+    public function remove($fd) {
+        $this->_storage->del($fd);
+        $this->_cache->del('client_' . $fd);
+    }
+
     public function update(Client $client) {
         $fd = $client->fd;
         return $this->_cache->set('client_' . $fd, serialize($client));

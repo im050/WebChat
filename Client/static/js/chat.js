@@ -1,12 +1,16 @@
 /**
  * 聊天室控制
  */
-
 var Chat;
 Chat = function (options) {
 
     var storage = window.localStorage;
     var heartPacketInterval = null;
+
+    this.user = {
+        user_id : 0,
+        nickchen : ''
+    }
 
 
     this.options = {
@@ -15,10 +19,17 @@ Chat = function (options) {
 
     this.options = $.extend(this.options, options);
 
+    var _chat = this;
+
     var messageList = new Vue({
         el: this.options.mlc_id,
         data: {
             list : []
+        },
+        methods : {
+            isOwner: function(user_id) {
+                return _chat.user.user_id == user_id;
+            }
         }
     });
 
@@ -36,7 +47,10 @@ Chat = function (options) {
         //收到登录消息处理
         this.server.bindRecvHandler('login', function (data) {
             if (data.status == true) {
+                //登录成功,加载聊天记录
                 _this.loadMessageRecord(1);
+                //更新用户信息
+                _this.setUser(data.user.user_id, data.user.nickchen);
                 $(".login").fadeOut();
             } else {
                 //alert("登录失败,请重新登录!");
@@ -63,10 +77,9 @@ Chat = function (options) {
         var _this = this;
 
         data.time = new Date(parseInt(data.time * 1000)).format("yyyy-MM-dd h:m:s");
-
         messageList.$data.list.push(data);
-
         messageList.$nextTick(function(){
+            //console.log(this);
             _this.scrollToEnd();
         });
         //console.log(data);
@@ -120,7 +133,8 @@ Chat = function (options) {
                         nickchen: msg[i].content.nickchen,
                         message: msg[i].content.message,
                         avatar: msg[i].content.avatar,
-                        time: msg[i].content.time
+                        time: msg[i].content.time,
+                        user_id: msg[i].content.user_id
                     };
 
                     _this.printMessage(message);
@@ -157,7 +171,7 @@ Chat = function (options) {
             dataType: 'json',
             success: function (data) {
                 if (data.status == true) {
-                    var token = data.access_token
+                    var token = data.access_token;
                     storage.setItem("access_token", token);
                     $(".login").fadeOut();
                     _this.loginServer(token);
@@ -169,6 +183,11 @@ Chat = function (options) {
                 alert(e);
             }
         });
+    }
+
+    this.setUser = function(user_id, nickchen) {
+        this.user.user_id = user_id;
+        this.user.nickchen = nickchen;
     }
 
 };

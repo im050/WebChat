@@ -12,10 +12,16 @@ namespace Client;
 class User
 {
 
-    private $username, $nickchen, $avatar;
+    private $user_id, $username, $nickchen, $avatar;
 
-    public function __construct()
+    public function __construct($object = null)
     {
+        if (!empty($object)) {
+            $data = (array) $object;
+            foreach($data as $key=>$val) {
+                $this->$key = $val;
+            }
+        }
     }
 
     public function __set($name, $value) {

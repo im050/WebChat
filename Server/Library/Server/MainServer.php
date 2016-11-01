@@ -38,7 +38,7 @@ class MainServer extends WebSocketServer
     {
         $fd = $request->fd;
         $this->clients[$fd] = new Client($fd, $this);
-        $clientStorage = new ClientStorage();
+        $clientStorage = ClientStorage::getInstance();
         $clientStorage->push($this->clients[$fd]);
     }
 
@@ -49,7 +49,8 @@ class MainServer extends WebSocketServer
 
     public function onClose($server, $fd)
     {
-
+        $clientStorage = ClientStorage::getInstance();
+        $clientStorage->remove($fd);
     }
 
     public function getServer() {

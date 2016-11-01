@@ -28,4 +28,8 @@ class Redis
         $this->_connection->set($key, $value);
     }
 
+    public function del($key) {
+        $this->_connection->del($key);
+    }
+
 }
