@@ -62,6 +62,7 @@ body {
     border: 1px solid #ddd;
     float: left;
     margin-right: 10px;
+    margin-bottom: 10px;
     cursor:  pointer;
     transition: all ease .1s;
 }
@@ -92,6 +93,7 @@ body {
     max-width: 200px;
     bottom: -40px;
     margin: 0 auto;
+    visibility: hidden;
     z-index: 999;
     color: #fff;
     left: 0;
@@ -103,6 +105,7 @@ body {
     content: "";
     border-color:  transparent transparent rgba(0,0,0,0.7) transparent;
     border-width: 5px;
+    visibility: hidden;
     border-style: solid;
     position: absolute;
     bottom: -10px;
@@ -111,6 +114,7 @@ body {
     left: 5px;
 }
 .tips:hover:after, .tips:hover:before {
+    visibility: visible;
     transition:  all ease .2s;
     opacity: 1;
     display: block;
