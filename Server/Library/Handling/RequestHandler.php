@@ -21,6 +21,9 @@ class RequestHandler
         $this->response = $response;
     }
 
+    /**
+     * 分段处理HTTP请求
+     */
     public function handleRequest() {
         $route = strtolower(trim($this->request->server['request_uri'], '/'));
         switch($route) {

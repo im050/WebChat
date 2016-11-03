@@ -20,6 +20,11 @@ class MainServer extends WebSocketServer
     private $_server_handler = null;
     private $clients = [];
 
+    /**
+     * MainServer constructor.
+     * @param string $ip
+     * @param string $port
+     */
     public function __construct($ip = '', $port = '')
     {
         if ($ip == '')
@@ -34,6 +39,13 @@ class MainServer extends WebSocketServer
 
     }
 
+    /**
+     * socket连接事件
+     * 握手成功后触发该事件
+     *
+     * @param $server
+     * @param $request
+     */
     public function onOpen($server, $request)
     {
         $fd = $request->fd;
@@ -46,11 +58,24 @@ class MainServer extends WebSocketServer
         }
     }
 
+    /**
+     * 消息接受事件
+     *
+     * @param $server
+     * @param $frame
+     */
     public function onMessage($server, $frame) {
         $fd = $frame->fd;
         $this->_server_handler->hold($this->clients[$fd], $frame);
     }
 
+    /**
+     * 连接关闭事件
+     * 包括主动关闭和被动关闭都会触发该事件
+     *
+     * @param $server
+     * @param $fd
+     */
     public function onClose($server, $fd)
     {
         if ($this->is_websocket($fd)) {
@@ -70,15 +95,32 @@ class MainServer extends WebSocketServer
         }
     }
 
+    /**
+     * 根据FD文件描述符
+     * 判断该连接是否是websocket客户端
+     *
+     * @param $fd
+     * @return bool
+     */
     public function is_websocket($fd) {
         $fdInfo = $this->server->connection_info($fd);
         return ($fdInfo['websocket_status'] == WEBSOCKET_STATUS_FRAME);
     }
 
+    /**
+     * 得到Swoole Websocket Server
+     *
+     * @return null|\swoole_websocket_server
+     */
     public function getServer() {
         return $this->server;
     }
 
+    /**
+     * 广播消息
+     *
+     * @param $string
+     */
     public function broadcast($string) {
         foreach($this->server->connections as $fd) {
             if ($this->is_websocket($fd)) {
@@ -87,6 +129,13 @@ class MainServer extends WebSocketServer
         }
     }
 
+    /**
+     * Http请求事件
+     * 当使用HTTP协议访问时触发该事件
+     *
+     * @param $request
+     * @param $response
+     */
     public function onRequest($request, $response) {
         if (strpos($request->server['request_uri'], '.ico') !== FALSE) {
             return;
@@ -95,6 +144,13 @@ class MainServer extends WebSocketServer
         $requestHandler->handleRequest();
     }
 
+    /**
+     * 启动事件
+     * 当进程启动时触发该事件
+     *
+     * @param $server
+     * @param $worker_id
+     */
     public function onWorkerStart($server, $worker_id)
     {
         //print_r($server);
@@ -103,6 +159,9 @@ class MainServer extends WebSocketServer
     }
 
 
+    /**
+     * 启动服务端
+     */
     public function start()
     {
         print_ln("服务端启动成功...");

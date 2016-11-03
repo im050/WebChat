@@ -7,6 +7,7 @@
 namespace Server;
 
 use \swoole_websocket_server;
+use Utils\Config;
 class WebSocketServer
 {
     protected $port = 8888;
@@ -22,11 +23,7 @@ class WebSocketServer
         $this->server = new swoole_websocket_server($this->ip, $this->port, SWOOLE_PROCESS);
 
         $this->server->set(
-            array(
-                'heartbeat_check_interval' => 60,
-                'heartbeat_idle_time' => 600,
-                'worker_num' => 4
-            )
+            Config::get('websocket.swoole_config')
         );
 
         $this->server->on('Open', array($this, 'onOpen'));

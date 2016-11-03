@@ -1,5 +1,6 @@
 /**
  * 聊天室控制
+ * @author memory<service@im050.com>
  */
 var Chat;
 Chat = function (options) {
