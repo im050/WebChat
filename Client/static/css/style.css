@@ -1,0 +1,253 @@
+body {
+    margin: 0;
+    background-color: #ebebeb;
+    padding: 0px;
+    font: normal 12px "Microsoft yahei";
+}
+
+.warp {
+    position: absolute;
+    left: 90px;
+    right: 300px;
+    top: 0;
+    bottom: 0;
+    height: 100%;
+}
+
+.top-bar {
+    background: #f1f1f1;
+    border-bottom: #ddd 1px solid;
+    text-align: center;
+    font: normal 16px/50px "Microsoft yahei";
+    height: 50px;
+    top: 30px;
+    left: 90px;
+    right: 0px;
+    line-height: 50px;
+}
+
+.side-bar {
+    background: #eee;
+    top: 50px;
+    border-left: 1px solid #ddd;
+    right: 0px;
+    width: 300px;
+    height: auto;
+    padding: 15px;
+    bottom: 0px;
+    position: absolute;
+}
+.side-bar h4 {
+    border-bottom: 1px solid #ddd;
+    line-height: 48px;
+    margin-bottom: 10px;
+}
+
+.side-bar h4 span {
+    font-size: 12px;
+    color: orange;
+    margin-left: 10px;
+}
+
+.online-list {
+    margin: 0;
+    padding: 0;
+}
+
+.online-list li {
+    width: 42px;
+    height: 42px;
+    border-radius: 5px;
+    list-style: none;
+    border: 1px solid #ddd;
+    float: left;
+    margin-right: 10px;
+    cursor:  pointer;
+    transition: all ease .1s;
+}
+
+.online-list li img {
+    border-radius: 5px;
+}
+
+.online-list li:hover {
+    box-shadow: 3px 3px 3px rgba(0,0,0,0.3);
+    transform: scale(1.1);
+    transition: all ease .1s;
+}
+
+.tips {
+    position: relative;
+    text-align:  center;
+}
+
+.tips:after {
+    content: attr(data-content);
+    position: absolute;
+    width: auto;
+    padding: 0 10px;
+    border-radius: 5px;
+    height: 30px;
+    line-height: 30px;
+    max-width: 200px;
+    bottom: -40px;
+    margin: 0 auto;
+    z-index: 999;
+    color: #fff;
+    left: 0;
+    transition:  all ease .2s;
+    opacity: 0;
+    background: rgba(0,0,0,0.7);
+}
+.tips:before {
+    content: "";
+    border-color:  transparent transparent rgba(0,0,0,0.7) transparent;
+    border-width: 5px;
+    border-style: solid;
+    position: absolute;
+    bottom: -10px;
+    transition:  all ease .2s;
+    opacity: 0;
+    left: 5px;
+}
+.tips:hover:after, .tips:hover:before {
+    transition:  all ease .2s;
+    opacity: 1;
+    display: block;
+}
+
+.chat {
+    width: auto;
+    left: 10px;
+    right: 10px;
+    position: absolute;
+    top: 50px;
+    bottom: 50px;
+    -webkit-box-sizing: border-box;
+    overflow: auto;
+}
+
+.chat-panel {
+    position: absolute;
+    bottom: 0px;
+    height: 50px;
+    border-top: #ddd 1px solid;
+    width: auto;
+    background: #f4f4f6;
+}
+
+.login {
+    background: rgba(255, 255, 255, 0.7);
+    border: 1px solid #ececec;
+    border-radius: 5px;
+    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.3);
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 300px;
+    height: 200px;
+    z-index: 999;
+    padding: 20px;
+    margin: -150px 0 0 -150px;
+}
+
+.message-list {
+    margin: 0;
+    padding: 0;
+}
+
+.message-list li {
+    list-style: none;
+    margin: 10px 0;
+    font-size: 14px;
+    position: relative;
+
+}
+
+.message-list .face {
+    width: 32px;
+    height: 32px;
+    position: absolute;
+}
+
+.content {
+    display: inline-block;
+    width: auto;
+    background: #fff;
+    max-width: 60%;
+    word-break: break-all;
+    word-wrap: break-word;
+    color: #000;
+    line-height: 32px;
+    padding: 0 10px;
+    border-radius: 5px;
+    position: relative;
+}
+
+.owner .face {
+    right: 0px;
+}
+
+.owner .message-layer {
+    text-align: right;
+    margin: 0 42px 0 0;
+}
+
+.owner .content {
+    background: #a2e759;
+}
+
+.content:after {
+    content: "";
+    border-color: transparent #fff transparent transparent;
+    top: 10px;
+    border-style: solid;
+    border-width: 5px;
+    position: absolute;
+    left: -9px;
+}
+
+.owner .content:after {
+    content: "";
+    border-color: transparent transparent transparent #a2e759;
+    right: -9px;
+    left: auto;
+}
+
+.nickchen {
+    padding-left: 3px;
+    margin-bottom: 2px;
+    color: #666;
+    font-weight: bold;
+}
+
+.time {
+    display: none;
+}
+
+.message-layer {
+    margin: 0 0 0 42px;
+    width: auto;
+}
+
+.clearfix {
+    zoom: 1;
+    visibility: hidden;
+    clear: both;
+}
+
+.message-input {
+    width: auto;
+    margin: 5px 20px;
+}
+
+.chat-navigation {
+    width: 90px;
+    position: absolute;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    height: 100%;
+    background: url(http://cdn.pcbeta.attachment.inimc.com/data/attachment/forum/201406/15/131327rb3yu6t2xzrvl63y.jpg);
+
+}

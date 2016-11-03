@@ -72,6 +72,10 @@ class PacketCreator
         return null;
     }
 
+    public function clear() {
+        $this->attributes = [];
+    }
+
     public function __set($name, $value) {
         if (isset($this->$name)) {
             $this->$name = $value;

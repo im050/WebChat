@@ -41,7 +41,7 @@ class Client
      * 客户端用户
      * @var \Client\User
      */
-    private $user;
+    private $user = null;
 
     /**
      * Client constructor.

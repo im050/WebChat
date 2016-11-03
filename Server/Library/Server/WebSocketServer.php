@@ -25,7 +25,7 @@ class WebSocketServer
             array(
                 'heartbeat_check_interval' => 60,
                 'heartbeat_idle_time' => 600,
-                'worker_num' => 2
+                'worker_num' => 4
             )
         );
 
@@ -33,6 +33,7 @@ class WebSocketServer
         $this->server->on('Message', array($this, 'onMessage'));
         $this->server->on('Close', array($this, 'onClose'));
         $this->server->on('Request', array($this, 'onRequest'));
+        $this->server->on('WorkerStart', array($this, 'onWorkerStart'));
 
     }
 

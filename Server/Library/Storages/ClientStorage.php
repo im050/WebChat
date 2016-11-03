@@ -18,21 +18,38 @@ class ClientStorage
     private static $instance = null;
     protected $_cache = null;
 
-    public function __construct()
+    public function __construct($room_id)
     {
         if ($this->_storage == NULL) {
-            $this->_storage = Storage::getInstance('ClientStorage');
+            $this->_storage = Storage::getInstance('ClientStorage_Room_' . $room_id);
         }
         if ($this->_cache == NULL) {
             $this->_cache = Cache::getInstance();
         }
     }
 
-    public static function getInstance() {
+    public static function getInstance($room_id = 1) {
         if (self::$instance == null) {
-            self::$instance = new self();
+            self::$instance = new self($room_id = 1);
         }
         return self::$instance;
+    }
+
+    public function all() {
+        $list = $this->_storage->all();
+        $client_keys = [];
+        foreach($list as $fd) {
+            $client_keys[] = "client_{$fd}";
+        }
+        $clients = $this->_cache->mget($client_keys);
+        array_walk($clients, function(&$val){
+            $val = unserialize($val);
+        });
+        return $clients;
+    }
+
+    public function all_fd() {
+        return $this->_storage->all();
     }
 
     public function push(Client $client) {

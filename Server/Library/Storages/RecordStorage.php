@@ -29,11 +29,17 @@ class RecordStorage
             $this->redis = RedisConnection::getInstance("record");
     }
 
-    public static function getInstance($id) {
-        if (!isset(self::$instance[$id])) {
-            self::$instance[$id] = new self($id);
+    /**
+     * 获取指定房间聊天记录实例
+     *
+     * @param $room_id 房间ID
+     * @return mixed
+     */
+    public static function getInstance($room_id) {
+        if (!isset(self::$instance[$room_id])) {
+            self::$instance[$room_id] = new self($room_id);
         }
-        return self::$instance[$id];
+        return self::$instance[$room_id];
     }
 
     public function push($content) {

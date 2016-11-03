@@ -8,6 +8,7 @@
 namespace Handling;
 
 use Auth\JWT;
+use Storages\ClientStorage;
 use Storages\RecordStorage;
 use Utils\PacketCreator;
 use Client\User;
@@ -62,6 +63,24 @@ class ServerHandler
             case 'ping':
 
                 break;
+            case 'online_list':
+                    $clientStorage = ClientStorage::getInstance(1);
+                    $clients = $clientStorage->all();
+                    $data = [];
+                    foreach($clients as $client) {
+                        $user = $client->getUser();
+                        if ($user == null)
+                            continue;
+                        $data[] = [
+                            'nickchen'=>$user->nickchen,
+                            'fd'=>$client->fd,
+                            'avatar'=>$user->avatar,
+                            'user_id'=>$user->user_id
+                        ];
+                    }
+                    $msg = $packet->make("online_list", $data);
+                    $this->client->write($msg);
+                break;
             case 'login':
                 $secret = Config::get('auth.jwt.secret');
                 $access_token = $content->access_token;
@@ -81,6 +100,17 @@ class ServerHandler
                             ]
                         ];
                         $msg = $packet->make('login', $data);
+                        $server = $this->client->getServer();
+                        $fdInfo = $server->connection_info($fd);
+                        //登录成功,通知所有人
+                        $user_login = $packet->make('user_login', array(
+                            'nickchen'=>$payload->nickchen,
+                            'avatar'=>$payload->avatar,
+                            'fd'=>$this->client->fd,
+                            'user_id'=>$payload->user_id
+                        ));
+                        $this->client->broadcast($user_login);
+                        print_ln("WorkerID [{$server->worker_id}]: " . $fdInfo['remote_ip'].":".$fdInfo['remote_port'] . " 用户 [{$payload->username}] 登录了服务器");
                     }
                 } else {
                     $msg = $packet->make('login', array('status' => false, 'msg' => '授权错误!'));

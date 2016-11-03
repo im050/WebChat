@@ -28,8 +28,19 @@ class Redis
         $this->_connection->set($key, $value);
     }
 
+    public function getMulti($keys) {
+        return $this->_connection->mget($keys);
+    }
+
     public function del($key) {
         $this->_connection->del($key);
+    }
+
+    public function __call($name, $arguments)
+    {
+        if (method_exists($this->_connection, $name)) {
+            return call_user_func_array(array($this->_connection, $name), $arguments);
+        }
     }
 
 }

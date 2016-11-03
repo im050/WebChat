@@ -8,32 +8,50 @@ Chat = function (options) {
     var heartPacketInterval = null;
 
     this.user = {
-        user_id : 0,
-        nickchen : ''
+        user_id: 0,
+        nickchen: ''
     }
 
+    this.screen = null;
 
+    //默认参数
     this.options = {
         mlc_id: '#msg_list' //message list container id
     };
 
+    //合并自定义参数
     this.options = $.extend(this.options, options);
 
+    //全局引用
     var _chat = this;
 
+    //vue对象
     var messageList = new Vue({
         el: this.options.mlc_id,
         data: {
-            list : []
+            list: []
         },
-        methods : {
-            isOwner: function(user_id) {
+        methods: {
+            isOwner: function (user_id) {
                 return _chat.user.user_id == user_id;
             }
         }
     });
 
+    //在线列表绑定
+    var onlineList = new Vue({
+        el: "#online-list",
+        data: {
+            users: [],
+            user_count : 0
+        }
+    })
+
+    /**
+     * 初始化过程
+     */
     this.init = function () {
+        this.screen = $(this.options.mlc_id).parent();
         var _this = this;
         //建立服务器
         this.server = new Server(this.options.url);
@@ -44,6 +62,13 @@ Chat = function (options) {
             _this.printMessage(data);
         });
 
+        //有新用户登录
+        this.server.bindRecvHandler('user_login', function(data) {
+            if (!_this.existsOnlineUser(data.user_id)) {
+                onlineList.$data.users.push(data);
+            }
+        });
+
         //收到登录消息处理
         this.server.bindRecvHandler('login', function (data) {
             if (data.status == true) {
@@ -51,12 +76,21 @@ Chat = function (options) {
                 _this.loadMessageRecord(1);
                 //更新用户信息
                 _this.setUser(data.user.user_id, data.user.nickchen);
+                //请求在线列表
+                _this.sendMessage({type:'online_list'});
                 $(".login").fadeOut();
             } else {
                 //alert("登录失败,请重新登录!");
                 $(".login").fadeIn();
             }
         });
+
+        //更新在线列表
+        this.server.bindRecvHandler('online_list', function(data){
+            onlineList.$data.users = data;
+            onlineList.$data.user_count = data.length;
+        });
+
         //握手成功执行动作,定时发送心跳包
         this.server.on('open', function (evt) {
             if (storage.getItem("access_token") != '') {
@@ -68,39 +102,50 @@ Chat = function (options) {
         });
     };
 
+    this.existsOnlineUser = function(user_id) {
+        var i = 0;
+        //console.log(user_id);
+        //console.log(onlineList.$data.users);
+        for(;i<onlineList.$data.users.length; i++) {
+            var data = onlineList.$data.users[i];
+            if (data.user_id == user_id) {
+
+                return true;
+            }
+        }
+        return false;
+    }
+
     /**
      * 打印聊天数据在屏幕
      * @param data
      */
-    this.printMessage = function (data) {
+    this.printMessage = function (data, toScrollEnd) {
+        if (toScrollEnd == null)
+            toScrollEnd = false;
 
         var _this = this;
-
         data.time = new Date(parseInt(data.time * 1000)).format("yyyy-MM-dd h:m:s");
         messageList.$data.list.push(data);
-        messageList.$nextTick(function(){
-            //console.log(this);
-            _this.scrollToEnd();
+        messageList.$nextTick(function () {
+            var currentHeight = $(_this.screen).scrollTop() + $(_this.screen).height();
+            console.log(_this.screen[0].scrollHeight - currentHeight);
+            if (_this.screen[0].scrollHeight - currentHeight < 100 || toScrollEnd == true) {
+                _this.scrollToEnd();
+            }
         });
-        //console.log(data);
-        //var nickchen = data.nickchen;
-        //var avatar = data.avatar;
-        //var message = data.message;
-        //var avatar = data.avatar;
-        //var time = new Date(parseInt(data.time) * 1000).format("yyyy-MM-dd h:m:s");
-        //$(this.options.mlc_id).append("<li><img src='"+avatar+"' width='32' height='32' />" + nickchen + ":" + message + " 时间:" + time + "</li>");
     };
 
     /**
      * 聊天窗滚动
      */
-    this.scrollToEnd = function() {
-        var screen = $(this.options.mlc_id).parent();
+    this.scrollToEnd = function () {
+        var screen = $(this.screen);
         try {
-            console.log($(screen).scrollTop() + " " + screen[0].scrollHeight);
+            //console.log($(screen).scrollTop() + " " + screen[0].scrollHeight);
             $(screen).scrollTop(screen[0].scrollHeight);
-        }catch(e){
-            console.log(e);
+        } catch (e) {
+            //console.log(e);
         }
     }
 
@@ -109,9 +154,7 @@ Chat = function (options) {
      * @param message
      */
     this.sendMessage = function (message) {
-        if (this.server.send(JSON.stringify(message))) {
-            //this.printMessage(message);
-        }
+        this.server.send(JSON.stringify(message));
     };
 
     /**
@@ -138,7 +181,7 @@ Chat = function (options) {
                         user_id: msg[i].content.user_id
                     };
 
-                    _this.printMessage(message);
+                    _this.printMessage(message, true);
                 }
 
                 _this.scrollToEnd();
@@ -160,7 +203,7 @@ Chat = function (options) {
      * @param username
      * @param password
      */
-    this.loginWeb = function(username, password){
+    this.loginWeb = function (username, password) {
         var _this = this;
         $.ajax({
             url: this.options.login_url,
@@ -177,16 +220,17 @@ Chat = function (options) {
                     $(".login").fadeOut();
                     _this.loginServer(token);
                 } else {
+                    //console.log(data);
                     alert(data.msg);
                 }
             },
             error: function (e) {
-                alert(e);
+                console.log(e);
             }
         });
     }
 
-    this.setUser = function(user_id, nickchen) {
+    this.setUser = function (user_id, nickchen) {
         this.user.user_id = user_id;
         this.user.nickchen = nickchen;
     }
