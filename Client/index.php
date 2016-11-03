@@ -16,7 +16,7 @@
 </head>
 <body>
 <section class="chat-navigation">
-
+    <div class="menu"><span class="glyphicon glyphicon-th-list"></span></div>
 </section>
 <div class="top-bar">
     Hello Memory

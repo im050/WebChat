@@ -47,7 +47,7 @@ Server.prototype.on = function(method, callback) {
             break;
         case 'close':
             this.websocket.onclose = callback;
-            this.websocket = null;
+            //this.websocket = null;
             break;
         case 'error':
             this.websocket.onerror = callback;

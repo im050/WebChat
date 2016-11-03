@@ -30,11 +30,13 @@ class ServerHandler
         $packet = new PacketCreator();
 
         switch ($type) {
+            //初始化
             case 'init':
                 if ($this->client->getClientStatus() == 0) {
 
                 }
                 break;
+            //发送消息
             case 'send_message':
                 $recordStorage = RecordStorage::getInstance(1);
 
@@ -63,6 +65,7 @@ class ServerHandler
             case 'ping':
 
                 break;
+            //获取在线列表
             case 'online_list':
                     $clientStorage = ClientStorage::getInstance(1);
                     $clients = $clientStorage->all();
@@ -81,6 +84,7 @@ class ServerHandler
                     $msg = $packet->make("online_list", $data);
                     $this->client->write($msg);
                 break;
+            //用户登录
             case 'login':
                 $secret = Config::get('auth.jwt.secret');
                 $access_token = $content->access_token;
@@ -89,6 +93,13 @@ class ServerHandler
                     if (isset($payload->exp) && time() > $payload->exp) {
                         $msg = $packet->make('login', array('status' => false, 'msg' => '授权过期,请重新登录.'));
                     } else {
+                        $clientStorage = ClientStorage::getInstance();
+                        //判断该用户是否登录状态
+                        if (($fd = $clientStorage->isLogin($payload->user_id)) !== FALSE) {
+                            $this->client->getServer()->close($fd);
+                        }
+                        //设置登录标记
+                        $clientStorage->setLogin($payload->user_id, $this->client->fd);
                         $this->client->setClientStatus(1);
                         $this->client->setUser(new User($payload));
                         $data = [
@@ -109,6 +120,7 @@ class ServerHandler
                             'fd'=>$this->client->fd,
                             'user_id'=>$payload->user_id
                         ));
+
                         $this->client->broadcast($user_login);
                         print_ln("WorkerID [{$server->worker_id}]: " . $fdInfo['remote_ip'].":".$fdInfo['remote_port'] . " 用户 [{$payload->username}] 登录了服务器");
                     }
@@ -120,7 +132,7 @@ class ServerHandler
                 $this->client->write($msg);
 
                 break;
-
+            //退出
             case 'quit':
                 $this->client->getServer()->close($fd);
                 break;

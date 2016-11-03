@@ -44,7 +44,7 @@ Chat = function (options) {
         el: "#online-list",
         data: {
             users: [],
-            user_count : 0
+            user_count: 0
         }
     })
 
@@ -64,9 +64,10 @@ Chat = function (options) {
         });
 
         //有新用户登录
-        this.server.bindRecvHandler('user_login', function(data) {
+        this.server.bindRecvHandler('user_login', function (data) {
             if (!_this.existsOnlineUser(data.user_id)) {
-                onlineList.$data.users.push(data);
+                onlineList.$data.users[data.user_id] = data;
+                onlineList.$data.user_count++;
             }
         });
 
@@ -78,7 +79,7 @@ Chat = function (options) {
                 //更新用户信息
                 _this.setUser(data.user.user_id, data.user.nickchen);
                 //请求在线列表
-                _this.sendMessage({type:'online_list'});
+                _this.sendMessage({type: 'online_list'});
                 $(".login").fadeOut();
             } else {
                 //alert("登录失败,请重新登录!");
@@ -87,9 +88,18 @@ Chat = function (options) {
         });
 
         //更新在线列表
-        this.server.bindRecvHandler('online_list', function(data){
-            onlineList.$data.users = data;
-            onlineList.$data.user_count = data.length;
+        this.server.bindRecvHandler('online_list', function (data) {
+            var list = [];
+            for(var i =0 ; i<data.length; i++) {
+                list.push({
+                    'nickchen': data[i].nickchen,
+                    'fd': data[i].fd,
+                    'user_id': data[i].user_id,
+                    'avatar':data[i].avatar
+                });
+            }
+            onlineList.$data.users = list;
+            onlineList.$data.user_count = list.length;
         });
 
         //握手成功执行动作,定时发送心跳包
@@ -101,13 +111,18 @@ Chat = function (options) {
                 _this.sendMessage({type: 'ping'});
             }, 5000);
         });
+
+        this.server.on("close", function(evt){
+            alert("服务器把你踹下去了!");
+        });
+
+
     };
 
-    this.existsOnlineUser = function(user_id) {
+    this.existsOnlineUser = function (user_id) {
         var i = 0;
-        //console.log(user_id);
         //console.log(onlineList.$data.users);
-        for(;i<onlineList.$data.users.length; i++) {
+        for (; i < onlineList.$data.users.length; i++) {
             var data = onlineList.$data.users[i];
             if (data.user_id == user_id) {
 
@@ -130,7 +145,7 @@ Chat = function (options) {
         messageList.$data.list.push(data);
         messageList.$nextTick(function () {
             var currentHeight = $(_this.screen).scrollTop() + $(_this.screen).height();
-            console.log(_this.screen[0].scrollHeight - currentHeight);
+            //console.log(_this.screen[0].scrollHeight - currentHeight);
             if (_this.screen[0].scrollHeight - currentHeight < 100 || toScrollEnd == true) {
                 _this.scrollToEnd();
             }
