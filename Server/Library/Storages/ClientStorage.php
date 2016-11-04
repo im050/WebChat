@@ -16,24 +16,20 @@ class ClientStorage
 
     //用于存放fd
     protected $_online_fd = null;
-    private static $instance = null;
-    protected $_cache = null;
+    protected static $_instance = [];
 
     public function __construct($room_id)
     {
         if ($this->_online_fd == NULL) {
             $this->_online_fd = Storage::getInstance('ClientStorage_fd_Room_' . $room_id);
         }
-        if ($this->_cache == NULL) {
-            $this->_cache = Cache::getInstance();
-        }
     }
 
     public static function getInstance($room_id = 1) {
-        if (self::$instance == null) {
-            self::$instance = new self($room_id = 1);
+        if (!isset(self::$_instance[$room_id])) {
+            self::$_instance[$room_id] = new self($room_id = 1);
         }
-        return self::$instance;
+        return self::$_instance[$room_id];
     }
 
     public function all() {
@@ -42,7 +38,7 @@ class ClientStorage
         foreach($list as $fd) {
             $client_keys[] = "client_{$fd}";
         }
-        $clients = $this->_cache->mget($client_keys);
+        $clients = Cache::getMulti($client_keys);
         array_walk($clients, function(&$val){
             $val = unserialize($val);
         });
@@ -56,12 +52,12 @@ class ClientStorage
     public function push(Client $client) {
         $fd = $client->fd;
         $this->_online_fd->push($fd);
-        $this->_cache->set('client_' . $fd, serialize($client));
+        Cache::set('client_' . $fd, serialize($client));
     }
 
     public function remove($fd) {
         $this->_online_fd->del($fd);
-        $this->_cache->del('client_' . $fd);
+        Cache::del('client_' . $fd);
     }
 
     /**
@@ -71,7 +67,7 @@ class ClientStorage
      * @return boolean|int
      */
     public function isLogin($user_id) {
-        $fd = $this->_cache->get('user_'.$user_id);
+        $fd = Cache::get('user_'.$user_id);
         if (intval($fd) > 0) {
             return $fd;
         } else {
@@ -80,16 +76,21 @@ class ClientStorage
     }
 
     public function setLogin($user_id, $fd) {
-        $this->_cache->set('user_'.$user_id, $fd);
+        Cache::set('user_'.$user_id, $fd);
+    }
+
+    public function logout($user_id, $fd) {
+        $this->remove($fd);
+        Cache::del('user_' . $user_id);
     }
 
     public function update(Client $client) {
         $fd = $client->fd;
-        return $this->_cache->set('client_' . $fd, serialize($client));
+        return Cache::set('client_' . $fd, serialize($client));
     }
 
     public function get($fd) {
-        return unserialize($this->_cache->get('client_' . $fd));
+        return unserialize(Cache::get('client_' . $fd));
     }
 
 }

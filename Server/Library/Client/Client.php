@@ -92,7 +92,11 @@ class Client
      * @param string $string
      */
     public function write($string) {
-        $this->getServer()->push($this->fd, $string);
+        try {
+            $this->getServer()->push($this->fd, $string);
+        }catch (\Exception $e) {
+            print_ln("FD:[{$this->fd}] 发送消息失败.");
+        }
     }
 
     /**

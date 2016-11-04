@@ -26,13 +26,14 @@ Chat = function (options) {
     //全局引用
     var _chat = this;
 
-    //vue对象
+    //消息列表
     var messageList = new Vue({
         el: this.options.mlc_id,
         data: {
             list: []
         },
         methods: {
+            //判断是否是自身发的消息
             isOwner: function (user_id) {
                 return _chat.user.user_id == user_id;
             }
@@ -66,7 +67,7 @@ Chat = function (options) {
         //有新用户登录
         this.server.bindRecvHandler('user_login', function (data) {
             if (!_this.existsOnlineUser(data.user_id)) {
-                onlineList.$data.users[data.user_id] = data;
+                onlineList.$data.users.push(data);
                 onlineList.$data.user_count++;
             }
         });
@@ -89,17 +90,13 @@ Chat = function (options) {
 
         //更新在线列表
         this.server.bindRecvHandler('online_list', function (data) {
-            var list = [];
-            for(var i =0 ; i<data.length; i++) {
-                list.push({
-                    'nickchen': data[i].nickchen,
-                    'fd': data[i].fd,
-                    'user_id': data[i].user_id,
-                    'avatar':data[i].avatar
-                });
-            }
-            onlineList.$data.users = list;
-            onlineList.$data.user_count = list.length;
+            //console.log(更新在线列表);
+            onlineList.$data.users = data;
+            onlineList.$data.user_count = data.length;
+        });
+
+        this.server.bindRecvHandler('pop_message', function(data){
+            alert(data.message);
         });
 
         //握手成功执行动作,定时发送心跳包
@@ -121,7 +118,6 @@ Chat = function (options) {
 
     this.existsOnlineUser = function (user_id) {
         var i = 0;
-        //console.log(onlineList.$data.users);
         for (; i < onlineList.$data.users.length; i++) {
             var data = onlineList.$data.users[i];
             if (data.user_id == user_id) {
@@ -158,7 +154,6 @@ Chat = function (options) {
     this.scrollToEnd = function () {
         var screen = $(this.screen);
         try {
-            //console.log($(screen).scrollTop() + " " + screen[0].scrollHeight);
             $(screen).scrollTop(screen[0].scrollHeight);
         } catch (e) {
             //console.log(e);

@@ -26,9 +26,7 @@ class ServerHandler
 
     public function handlePacket($fd, $type, $content)
     {
-
         $packet = new PacketCreator();
-
         switch ($type) {
             //初始化
             case 'init':
@@ -39,16 +37,14 @@ class ServerHandler
             //发送消息
             case 'send_message':
                 $recordStorage = RecordStorage::getInstance(1);
-
                 if ($this->client->getClientStatus() == 0) {
                     $this->client->write($packet->setType('error')->setErrorCode('UNLOGIN')->toJSON());
                 } else {
-                    $message = trim(safeStr($content));
+                    $message = trim(safeStr($content->message));
 
                     if ($message == '') {
                         return false;
                     }
-
                     $frame = array(
                         'message'=>$message,
                         'nickchen'=>$this->client->getUser()->nickchen,
@@ -56,7 +52,6 @@ class ServerHandler
                         'user_id'=>$this->client->getUser()->user_id,
                         'time'=>time()
                     );
-
                     $finalMessage = $packet->receiveMessage($frame);
                     $recordStorage->push($finalMessage);
                     $this->client->broadcast($finalMessage);
@@ -96,6 +91,7 @@ class ServerHandler
                         $clientStorage = ClientStorage::getInstance();
                         //判断该用户是否登录状态
                         if (($fd = $clientStorage->isLogin($payload->user_id)) !== FALSE) {
+                            $this->client->write($packet->make('pop_message', array('message'=>'您的账号在别处登录.')));
                             $this->client->getServer()->close($fd);
                         }
                         //设置登录标记
@@ -112,6 +108,7 @@ class ServerHandler
                         ];
                         $msg = $packet->make('login', $data);
                         $server = $this->client->getServer();
+                        $fd = $this->client->fd;
                         $fdInfo = $server->connection_info($fd);
                         //登录成功,通知所有人
                         $user_login = $packet->make('user_login', array(
@@ -135,6 +132,8 @@ class ServerHandler
             //退出
             case 'quit':
                 $this->client->getServer()->close($fd);
+                break;
+            case 'close':
                 break;
         }
 

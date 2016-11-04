@@ -22,7 +22,9 @@ $(function () {
         }
         var data = {
             type: 'send_message',
-            content: msg
+            content: {
+                message: msg
+            }
         }
         $("[name=msg]").val('');
         chat.sendMessage(data);
