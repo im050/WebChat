@@ -44,6 +44,12 @@ class Client
     private $user = null;
 
     /**
+     * 当前客户端所在房间ID
+     * @var int
+     */
+    private $room_id = 0;
+
+    /**
      * Client constructor.
      * @param string $client_id 文件描述符
      * @param \Server\MainServer $server 主服务器
@@ -52,7 +58,9 @@ class Client
         $this->server = $server;
         $this->client_id = $client_id;
         $this->fd = $client_id;
+        $this->room_id = 1;
     }
+
 
     /**
      * 获得客户端状态
@@ -103,8 +111,12 @@ class Client
      * 广播消息
      * @param string $string
      */
-    public function broadcast($string) {
-        $this->server->broadcast($string);
+    public function broadcast($string, $excludeFd = array()) {
+        $this->server->broadcast($string, $excludeFd);
+    }
+
+    public function broadcastRoom($room_id, $string, $excludeFd = array()) {
+        $this->server->broadcastRoom($room_id, $string, $excludeFd);
     }
 
     /**
@@ -121,6 +133,14 @@ class Client
      */
     public function getUser() {
         return $this->user;
+    }
+
+    public function getRoomId() {
+        return $this->room_id;
+    }
+
+    public function setRoomId($room_id) {
+        $this->room_id = $room_id;
     }
 
     /**

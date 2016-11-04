@@ -40,14 +40,14 @@ Chat = function (options) {
         }
     });
 
-    //在线列表绑定
+    //在线列表
     var onlineList = new Vue({
         el: "#online-list",
         data: {
             users: [],
             user_count: 0
         }
-    })
+    });
 
     /**
      * 初始化过程
@@ -69,6 +69,19 @@ Chat = function (options) {
             if (!_this.existsOnlineUser(data.user_id)) {
                 onlineList.$data.users.push(data);
                 onlineList.$data.user_count++;
+            }
+        });
+
+        //有用户退出
+        this.server.bindRecvHandler('user_logout', function(data){
+            var list = onlineList.$data.users;
+            for(var i = 0; i<list.length; i++) {
+                var user = list[i];
+                if (user.user_id == data.user_id) {
+                    onlineList.$data.users.splice(i, 1);
+                    onlineList.$data.user_count--;
+                    break;
+                }
             }
         });
 
@@ -110,6 +123,7 @@ Chat = function (options) {
         });
 
         this.server.on("close", function(evt){
+            storage.clear();
             alert("服务器把你踹下去了!");
         });
 

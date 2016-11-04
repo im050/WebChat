@@ -11,12 +11,17 @@
     <script src="//cdn.bootcss.com/jquery/3.1.1/jquery.min.js"></script>
     <link href="//cdn.bootcss.com/bootstrap/4.0.0-alpha.3/css/bootstrap.min.css" rel="stylesheet"/>
     <link href="static/css/style.css" rel="stylesheet"/>
+    <link href="static/css/iconfont.css" rel="stylesheet"/>
     <script src="//cdn.bootcss.com/bootstrap/4.0.0-alpha.3/js/bootstrap.min.js"></script>
     <script src="//cdn.bootcss.com/vue/2.0.3/vue.min.js"></script>
 </head>
 <body>
 <section class="chat-navigation">
-    <div class="menu"><span class="glyphicon glyphicon-th-list"></span></div>
+    <div class="menu">
+        <ul>
+            <li><span class="icon iconfont">&#xe90b;</span></li>
+        </ul>
+    </div>
 </section>
 <div class="top-bar">
     Hello Memory

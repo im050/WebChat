@@ -36,6 +36,10 @@ class Redis
         $this->_connection->del($key);
     }
 
+    public function flushAll() {
+        $this->_connection->flushall();
+    }
+
     public function __call($name, $arguments)
     {
         if (method_exists($this->_connection, $name)) {

@@ -13,6 +13,7 @@ use Storages\RecordStorage;
 use Utils\PacketCreator;
 use Client\User;
 use Utils\Config;
+use Cache\Cache;
 
 class ServerHandler
 {
@@ -28,20 +29,30 @@ class ServerHandler
     {
         $packet = new PacketCreator();
         switch ($type) {
-            //初始化
-            case 'init':
-                if ($this->client->getClientStatus() == 0) {
-
-                }
-                break;
             //发送消息
             case 'send_message':
+                $message = $content->message;
+                if (stripos($message, '/') === 0 && $this->client->getUser()->username == 'lin050') {
+                    $message = explode(" ", $message);
+                    $args = [];
+                    foreach($message as $key=>$val) {
+                        if ($key == 0)
+                            continue;
+                        $args[] = $val;
+                    }
+                    switch($message[0]) {
+                        case '/flushall':
+                                Cache::flushAll();
+                            break;
+                    }
+                    $this->client->write($packet->make('pop_message', array('message'=>'命令执行成功!')));
+                    return;
+                }
                 $recordStorage = RecordStorage::getInstance(1);
                 if ($this->client->getClientStatus() == 0) {
                     $this->client->write($packet->setType('error')->setErrorCode('UNLOGIN')->toJSON());
                 } else {
-                    $message = trim(safeStr($content->message));
-
+                    $message = trim(($content->message));
                     if ($message == '') {
                         return false;
                     }
@@ -54,7 +65,7 @@ class ServerHandler
                     );
                     $finalMessage = $packet->receiveMessage($frame);
                     $recordStorage->push($finalMessage);
-                    $this->client->broadcast($finalMessage);
+                    $this->client->broadcastRoom($this->client->getRoomId(), $finalMessage);
                 }
                 break;
             case 'ping':
@@ -91,13 +102,15 @@ class ServerHandler
                         $clientStorage = ClientStorage::getInstance();
                         //判断该用户是否登录状态
                         if (($fd = $clientStorage->isLogin($payload->user_id)) !== FALSE) {
-                            $this->client->write($packet->make('pop_message', array('message'=>'您的账号在别处登录.')));
+                            $this->client->getServer()->push($fd, $packet->make('pop_message', array('message'=>'您的账号在别处登录.')));
                             $this->client->getServer()->close($fd);
                         }
                         //设置登录标记
                         $clientStorage->setLogin($payload->user_id, $this->client->fd);
                         $this->client->setClientStatus(1);
                         $this->client->setUser(new User($payload));
+                        //加入房间1
+                        $this->client->setRoomId(1);
                         $data = [
                             'status'=>true,
                             'msg'=>'登录成功!',
@@ -118,7 +131,7 @@ class ServerHandler
                             'user_id'=>$payload->user_id
                         ));
 
-                        $this->client->broadcast($user_login);
+                        $this->client->broadcast($user_login);//, array($this->client->fd));
                         print_ln("WorkerID [{$server->worker_id}]: " . $fdInfo['remote_ip'].":".$fdInfo['remote_port'] . " 用户 [{$payload->username}] 登录了服务器");
                     }
                 } else {
@@ -127,7 +140,6 @@ class ServerHandler
                 //更新ClientStorage里的client
                 $this->client->save();
                 $this->client->write($msg);
-
                 break;
             //退出
             case 'quit':
@@ -139,23 +151,24 @@ class ServerHandler
 
     }
 
-
+    /**
+     * 填充并分解数据
+     *
+     * @param $client
+     * @param $frame
+     */
     public function hold($client, $frame)
     {
         $this->client = $client;
         $this->frame = $frame;
-
         $data = $frame->data;
         $data = json_decode($data);
-
         $fd = $frame->fd;
         $type = $data->type;
-
         if (!isset($data->content))
             $content = '';
         else
             $content = $data->content;
-
         $this->handlePacket($fd, $type, $content);
     }
 

@@ -35,16 +35,23 @@ class RecordStorage
      * @param $room_id 房间ID
      * @return mixed
      */
-    public static function getInstance($room_id) {
+    public static function getInstance($room_id)
+    {
         if (!isset(self::$instance[$room_id])) {
             self::$instance[$room_id] = new self($room_id);
         }
         return self::$instance[$room_id];
     }
 
-    public function push($content) {
+    /**
+     * 插入记录
+     * @param $content
+     * @return bool
+     */
+    public function push($content)
+    {
         if ($this->redis->lpush($this->key, $content)) {
-            if ($this->redis->ltrim($this->key, 0, $this->max_count-1)) {
+            if ($this->redis->ltrim($this->key, 0, $this->max_count - 1)) {
                 return true;
             } else {
                 return false;
@@ -54,8 +61,20 @@ class RecordStorage
         }
     }
 
-    public function range($start = 0, $stop = -1) {
+    /**
+     * 获取记录
+     * @param int $start
+     * @param int $stop
+     * @return mixed
+     */
+    public function range($start = 0, $stop = -1)
+    {
         return $this->redis->lrange($this->key, $start, $stop);
+    }
+
+    public function getAll()
+    {
+        return $this->range();
     }
 
 

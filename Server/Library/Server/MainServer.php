@@ -13,13 +13,15 @@ use Client\Client;
 use Storages\ClientStorage;
 use Utils\Config;
 use Cache\Cache;
+use Utils\PacketCreator;
 
 class MainServer extends WebSocketServer
 {
     protected $port = 8888;
     protected $ip = '0.0.0.0';
-    private $_server_handler = null;
+    //private $_server_handler = null;
     private $clients = [];
+    protected static $_instance = null;
 
     /**
      * MainServer constructor.
@@ -36,8 +38,16 @@ class MainServer extends WebSocketServer
         }
 
         parent::__construct($ip, $port);
-        $this->_server_handler = new ServerHandler();
+        //$this->_server_handler = new ServerHandler();
 
+    }
+
+    public static function getInstance($ip = '', $port = '')
+    {
+        if (self::$_instance == null) {
+            self::$_instance = new self($ip, $port);
+        }
+        return self::$_instance;
     }
 
     /**
@@ -55,7 +65,7 @@ class MainServer extends WebSocketServer
             $this->clients[$fd] = new Client($fd, $this);
             $clientStorage = ClientStorage::getInstance(1);
             $clientStorage->push($this->clients[$fd]);
-            print_ln("WorkerID [{$server->worker_id}]: " . $fdInfo['remote_ip'].":".$fdInfo['remote_port'] . " Connection.");
+            print_ln("WorkerID [{$server->worker_id}]: " . $fdInfo['remote_ip'] . ":" . $fdInfo['remote_port'] . " Connection.");
         }
     }
 
@@ -65,9 +75,12 @@ class MainServer extends WebSocketServer
      * @param $server
      * @param $frame
      */
-    public function onMessage($server, $frame) {
+    public function onMessage($server, $frame)
+    {
         $fd = $frame->fd;
-        $this->_server_handler->hold($this->clients[$fd], $frame);
+        $server_handler = new ServerHandler();
+        $server_handler->hold($this->clients[$fd], $frame);
+        unset($server_handler);
     }
 
     /**
@@ -85,6 +98,14 @@ class MainServer extends WebSocketServer
             if ($client != null) {
                 $user = $client->getUser();
                 if ($user != null) {
+                    $packet = new PacketCreator();
+                    try {
+                        $this->broadcast($packet->make('user_logout', array(
+                            'user_id' => $user->user_id
+                        )), array($client->fd));
+                    } catch (\Exception $e) {
+                        print_ln("session closed.");
+                    }
                     $clientStorage->logout($user->user_id, $fd);
                     $username = $client->getUser()->username;
                     print_ln("WorkerID [{$server->worker_id}]: 用户 [{$username}] 断开连接...");
@@ -104,7 +125,8 @@ class MainServer extends WebSocketServer
      * @param $fd
      * @return bool
      */
-    public function is_websocket($fd) {
+    public function is_websocket($fd)
+    {
         $fdInfo = $this->server->connection_info($fd);
         return ($fdInfo['websocket_status'] == WEBSOCKET_STATUS_FRAME);
     }
@@ -114,18 +136,43 @@ class MainServer extends WebSocketServer
      *
      * @return null|\swoole_websocket_server
      */
-    public function getServer() {
+    public function getServer()
+    {
         return $this->server;
     }
 
     /**
-     * 广播消息
+     * 全部广播消息
      *
      * @param $string
      */
-    public function broadcast($string) {
-        foreach($this->server->connections as $fd) {
+    public function broadcast($string, $excludeFd = array())
+    {
+        foreach ($this->server->connections as $fd) {
             if ($this->is_websocket($fd)) {
+                if (in_array($fd, $excludeFd)) {
+                    continue;
+                }
+                $this->server->push($fd, $string);
+            }
+        }
+    }
+
+    /**
+     * 房间广播
+     *
+     * @param $room_id
+     * @param $string
+     * @param array $excludeFd
+     */
+    public function broadcastRoom($room_id, $string, $excludeFd = array())
+    {
+        $clientStorage = ClientStorage::getInstance($room_id);
+        $fd_list = $clientStorage->allFd();
+        foreach ($fd_list as $fd) {
+            if ($this->is_websocket($fd)) {
+                if (in_array($fd, $excludeFd))
+                    continue;
                 $this->server->push($fd, $string);
             }
         }
@@ -138,7 +185,8 @@ class MainServer extends WebSocketServer
      * @param $request
      * @param $response
      */
-    public function onRequest($request, $response) {
+    public function onRequest($request, $response)
+    {
         if (strpos($request->server['request_uri'], '.ico') !== FALSE) {
             return;
         }
@@ -165,6 +213,8 @@ class MainServer extends WebSocketServer
      */
     public function start()
     {
+        //* 开始清楚redis缓存 *//
+
         print_ln("服务端启动成功...");
         print_ln("监听端口: {$this->port}");
         parent::start();
