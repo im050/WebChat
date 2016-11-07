@@ -12,7 +12,8 @@ class PacketCreator
 {
     private $attributes = [];
 
-    public function __construct() {
+    public function __construct()
+    {
 
     }
 
@@ -20,7 +21,8 @@ class PacketCreator
      * 将数据转换为JSON
      * @return string
      */
-    public function toJSON() {
+    public function toJSON()
+    {
         return json_encode($this->attributes);
     }
 
@@ -29,7 +31,8 @@ class PacketCreator
      * @param $content
      * @return $this
      */
-    public function receiveMessage($content) {
+    public function receiveMessage($content)
+    {
         $this->make('receive_message', $content);
         return $this->toJSON();
     }
@@ -40,7 +43,8 @@ class PacketCreator
      * @param $content
      * @return $this
      */
-    public function make($type, $content) {
+    public function make($type, $content)
+    {
         $this->attributes['type'] = $type;
         $this->attributes['content'] = $content;
         return $this->toJSON();
@@ -57,13 +61,14 @@ class PacketCreator
         $pattern = "/^set([A-Z]+[a-zA-z0-9]*)$/";
         if (preg_match($pattern, $name, $matches)) {
             $attr = $matches[1];
-            $attr = strtolower(preg_replace('/(.)(?=[A-Z])/u', '$1_',$attr));
+            $attr = strtolower(preg_replace('/(.)(?=[A-Z])/u', '$1_', $attr));
             $this->__set($attr, $arguments[0]);
             return $this;
         }
     }
 
-    public function __get($name) {
+    public function __get($name)
+    {
         if (isset($this->name)) {
             return $this->name;
         } else if (isset($this->attributes[$name])) {
@@ -72,11 +77,13 @@ class PacketCreator
         return null;
     }
 
-    public function clear() {
+    public function clear()
+    {
         $this->attributes = [];
     }
 
-    public function __set($name, $value) {
+    public function __set($name, $value)
+    {
         if (isset($this->$name)) {
             $this->$name = $value;
         } else {

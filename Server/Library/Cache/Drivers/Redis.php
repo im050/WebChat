@@ -2,6 +2,7 @@
 namespace Cache\Drivers;
 
 use Connections\RedisConnection;
+
 class Redis
 {
     protected static $_instance = null;
@@ -13,30 +14,36 @@ class Redis
         $this->_connection = RedisConnection::getInstance('cache');
     }
 
-    public static function getInstance() {
+    public static function getInstance()
+    {
         if (self::$_instance == null) {
             self::$_instance = new self();
         }
         return self::$_instance;
     }
 
-    public function get($key) {
+    public function get($key)
+    {
         return $this->_connection->get($key);
     }
 
-    public function set($key, $value) {
+    public function set($key, $value)
+    {
         $this->_connection->set($key, $value);
     }
 
-    public function getMulti($keys) {
+    public function getMulti($keys)
+    {
         return $this->_connection->mget($keys);
     }
 
-    public function del($key) {
+    public function del($key)
+    {
         $this->_connection->del($key);
     }
 
-    public function flushAll() {
+    public function flushAll()
+    {
         $this->_connection->flushall();
     }
 
@@ -45,6 +52,16 @@ class Redis
         if (method_exists($this->_connection, $name)) {
             return call_user_func_array(array($this->_connection, $name), $arguments);
         }
+    }
+
+    public function scan($it, $match = '', $count = 10)
+    {
+        return $this->_connection->scan($it, $match, $count);
+    }
+
+    public function setOption($name, $value)
+    {
+        $this->_connection->setOption($name, $value);
     }
 
 }

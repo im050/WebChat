@@ -2,7 +2,7 @@
 
 $do = $_GET['do'];
 
-switch($do) {
+switch ($do) {
     case 'record':
 
 }

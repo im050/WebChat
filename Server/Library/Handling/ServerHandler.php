@@ -35,17 +35,17 @@ class ServerHandler
                 if (stripos($message, '/') === 0 && $this->client->getUser()->username == 'lin050') {
                     $message = explode(" ", $message);
                     $args = [];
-                    foreach($message as $key=>$val) {
+                    foreach ($message as $key => $val) {
                         if ($key == 0)
                             continue;
                         $args[] = $val;
                     }
-                    switch($message[0]) {
+                    switch ($message[0]) {
                         case '/flushall':
-                                Cache::flushAll();
+                            Cache::flushAll();
                             break;
                     }
-                    $this->client->write($packet->make('pop_message', array('message'=>'命令执行成功!')));
+                    $this->client->write($packet->make('pop_message', array('message' => '命令执行成功!')));
                     return;
                 }
                 $recordStorage = RecordStorage::getInstance(1);
@@ -57,11 +57,11 @@ class ServerHandler
                         return false;
                     }
                     $frame = array(
-                        'message'=>$message,
-                        'nickchen'=>$this->client->getUser()->nickchen,
-                        'avatar'=>$this->client->getUser()->avatar,
-                        'user_id'=>$this->client->getUser()->user_id,
-                        'time'=>time()
+                        'message' => $message,
+                        'nickchen' => $this->client->getUser()->nickchen,
+                        'avatar' => $this->client->getUser()->avatar,
+                        'user_id' => $this->client->getUser()->user_id,
+                        'time' => time()
                     );
                     $finalMessage = $packet->receiveMessage($frame);
                     $recordStorage->push($finalMessage);
@@ -73,22 +73,22 @@ class ServerHandler
                 break;
             //获取在线列表
             case 'online_list':
-                    $clientStorage = ClientStorage::getInstance(1);
-                    $clients = $clientStorage->all();
-                    $data = [];
-                    foreach($clients as $client) {
-                        $user = $client->getUser();
-                        if ($user == null)
-                            continue;
-                        $data[] = [
-                            'nickchen'=>$user->nickchen,
-                            'fd'=>$client->fd,
-                            'avatar'=>$user->avatar,
-                            'user_id'=>$user->user_id
-                        ];
-                    }
-                    $msg = $packet->make("online_list", $data);
-                    $this->client->write($msg);
+                $clientStorage = ClientStorage::getInstance(1);
+                $clients = $clientStorage->all();
+                $data = [];
+                foreach ($clients as $client) {
+                    $user = $client->getUser();
+                    if ($user == null)
+                        continue;
+                    $data[] = [
+                        'nickchen' => $user->nickchen,
+                        'fd' => $client->fd,
+                        'avatar' => $user->avatar,
+                        'user_id' => $user->user_id
+                    ];
+                }
+                $msg = $packet->make("online_list", $data);
+                $this->client->write($msg);
                 break;
             //用户登录
             case 'login':
@@ -102,7 +102,7 @@ class ServerHandler
                         $clientStorage = ClientStorage::getInstance();
                         //判断该用户是否登录状态
                         if (($fd = $clientStorage->isLogin($payload->user_id)) !== FALSE) {
-                            $this->client->getServer()->push($fd, $packet->make('pop_message', array('message'=>'您的账号在别处登录.')));
+                            $this->client->getServer()->push($fd, $packet->make('pop_message', array('message' => '您的账号在别处登录.')));
                             $this->client->getServer()->close($fd);
                         }
                         //设置登录标记
@@ -112,11 +112,11 @@ class ServerHandler
                         //加入房间1
                         $this->client->setRoomId(1);
                         $data = [
-                            'status'=>true,
-                            'msg'=>'登录成功!',
-                            'user'=>[
-                                'user_id'=>$payload->user_id,
-                                'nickchen'=>$payload->nickchen
+                            'status' => true,
+                            'msg' => '登录成功!',
+                            'user' => [
+                                'user_id' => $payload->user_id,
+                                'nickchen' => $payload->nickchen
                             ]
                         ];
                         $msg = $packet->make('login', $data);
@@ -125,14 +125,14 @@ class ServerHandler
                         $fdInfo = $server->connection_info($fd);
                         //登录成功,通知所有人
                         $user_login = $packet->make('user_login', array(
-                            'nickchen'=>$payload->nickchen,
-                            'avatar'=>$payload->avatar,
-                            'fd'=>$this->client->fd,
-                            'user_id'=>$payload->user_id
+                            'nickchen' => $payload->nickchen,
+                            'avatar' => $payload->avatar,
+                            'fd' => $this->client->fd,
+                            'user_id' => $payload->user_id
                         ));
 
                         $this->client->broadcast($user_login);//, array($this->client->fd));
-                        print_ln("WorkerID [{$server->worker_id}]: " . $fdInfo['remote_ip'].":".$fdInfo['remote_port'] . " 用户 [{$payload->username}] 登录了服务器");
+                        print_ln("WorkerID [{$server->worker_id}]: " . $fdInfo['remote_ip'] . ":" . $fdInfo['remote_port'] . " 用户 [{$payload->username}] 登录了服务器");
                     }
                 } else {
                     $msg = $packet->make('login', array('status' => false, 'msg' => '授权错误!'));

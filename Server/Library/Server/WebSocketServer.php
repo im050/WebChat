@@ -8,6 +8,7 @@ namespace Server;
 
 use \swoole_websocket_server;
 use Utils\Config;
+
 class WebSocketServer
 {
     protected $port = 8888;
@@ -15,7 +16,8 @@ class WebSocketServer
 
     protected $server = null;
 
-    public function __construct($ip = '', $port = '') {
+    public function __construct($ip = '', $port = '')
+    {
 
         !empty($ip) && $this->ip = $ip;
         !empty($port) && $this->port = $port;
@@ -34,43 +36,53 @@ class WebSocketServer
 
     }
 
-    public function onOpen($server, $request) {
+    public function onOpen($server, $request)
+    {
 
     }
 
-    public function onMessage($server, $frame) {
+    public function onMessage($server, $frame)
+    {
 
     }
 
-    public function onClose($server, $fd) {
+    public function onClose($server, $fd)
+    {
 
     }
 
-    public function onTimer($server, $interval) {
+    public function onTimer($server, $interval)
+    {
 
     }
 
-    public function onRequest($request, $response) {
+    public function onRequest($request, $response)
+    {
 
     }
 
-    public function onWorkerStart($server, $worker_id) {
+    public function onWorkerStart($server, $worker_id)
+    {
 
     }
 
-    public function getServer() {
+    public function getServer()
+    {
         return $this->server;
     }
 
-    public function getIp() {
+    public function getIp()
+    {
         return $this->ip;
     }
 
-    public function getPort() {
+    public function getPort()
+    {
         return $this->port;
     }
 
-    public function start() {
+    public function start()
+    {
         $this->server->start();
     }
 

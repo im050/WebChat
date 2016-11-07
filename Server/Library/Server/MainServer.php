@@ -7,6 +7,7 @@
 
 namespace Server;
 
+use Connections\RedisConnection;
 use Handling\RequestHandler;
 use Handling\ServerHandler;
 use Client\Client;
@@ -17,9 +18,7 @@ use Utils\PacketCreator;
 
 class MainServer extends WebSocketServer
 {
-    protected $port = 8888;
-    protected $ip = '0.0.0.0';
-    //private $_server_handler = null;
+
     private $clients = [];
     protected static $_instance = null;
 
@@ -38,8 +37,6 @@ class MainServer extends WebSocketServer
         }
 
         parent::__construct($ip, $port);
-        //$this->_server_handler = new ServerHandler();
-
     }
 
     public static function getInstance($ip = '', $port = '')
@@ -62,7 +59,7 @@ class MainServer extends WebSocketServer
         $fd = $request->fd;
         if ($this->is_websocket($fd)) {
             $fdInfo = $this->server->connection_info($fd);
-            $this->clients[$fd] = new Client($fd, $this);
+            $this->clients[$fd] = new Client($fd);
             $clientStorage = ClientStorage::getInstance(1);
             $clientStorage->push($this->clients[$fd]);
             print_ln("WorkerID [{$server->worker_id}]: " . $fdInfo['remote_ip'] . ":" . $fdInfo['remote_port'] . " Connection.");
@@ -205,6 +202,19 @@ class MainServer extends WebSocketServer
     {
         print_ln("进程 [{$worker_id}] 启动成功.");
         Cache::init();
+        if ($worker_id == 0) {
+            print_ln("正在清空缓存数据...");
+            $redis = RedisConnection::getInstance();
+            $redis->setOption(\Redis::OPT_SCAN, \Redis::SCAN_RETRY);
+            while (($keys = $redis->scan($it, '', 1000))) {
+                foreach ($keys as $key) {
+                    if (!preg_match("/^record\_[0-9]+/", $key)) {
+                        $redis->del($key);
+                    }
+                }
+            }
+            print_ln("缓存数据清空完毕...");
+        }
     }
 
 
@@ -213,8 +223,6 @@ class MainServer extends WebSocketServer
      */
     public function start()
     {
-        //* 开始清楚redis缓存 *//
-
         print_ln("服务端启动成功...");
         print_ln("监听端口: {$this->port}");
         parent::start();

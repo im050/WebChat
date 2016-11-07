@@ -5,7 +5,9 @@
  * @author: memory<service@im050.com>
  */
 namespace Connections;
+
 use Utils\Config;
+
 class RedisConnection
 {
 
@@ -26,7 +28,8 @@ class RedisConnection
             return FALSE;
     }
 
-    public static function getInstance($name = 'default') {
+    public static function getInstance($name = 'default')
+    {
         if (!isset(self::$instance[$name])) {
             self::$instance[$name] = new self($name);
         }

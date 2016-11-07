@@ -19,20 +19,21 @@ body {
 }
 
 .top-bar {
-    background: #f1f1f1;
+    background: #f9f9f9;
     border-bottom: #ddd 1px solid;
-    text-align: center;
-    font: normal 16px/50px "Microsoft yahei";
-    height: 50px;
-    top: 30px;
+    text-align: left;
+    font: normal 18px/65px "Microsoft yahei";
+    height: 65px;
+    top: 0px;
+    padding: 0 20px;
     left: 90px;
+    position: absolute;
     right: 0px;
-    line-height: 50px;
 }
 
 .side-bar {
-    background: #eee;
-    top: 50px;
+    background: #f1f1f1;
+    top: 65px;
     border-left: 1px solid #ddd;
     right: 0px;
     width: 300px;
@@ -41,15 +42,14 @@ body {
     bottom: 0px;
     position: absolute;
 }
+
 .side-bar h4 {
-    border-bottom: 1px solid #ddd;
-    line-height: 48px;
-    margin-bottom: 10px;
+    line-height: 24px;
 }
 
 .side-bar h4 span {
-    font-size: 12px;
-    color: orange;
+    font-size: 14px;
+    color: #999;
     margin-left: 10px;
 }
 
@@ -67,7 +67,7 @@ body {
     float: left;
     margin-right: 10px;
     margin-bottom: 10px;
-    cursor:  pointer;
+    cursor: pointer;
     transition: all ease .1s;
 }
 
@@ -76,14 +76,14 @@ body {
 }
 
 .online-list li:hover {
-    box-shadow: 3px 3px 3px rgba(0,0,0,0.3);
+    box-shadow: 3px 3px 3px rgba(0, 0, 0, 0.3);
     transform: scale(1.1);
     transition: all ease .1s;
 }
 
 .tips {
     position: relative;
-    text-align:  center;
+    text-align: center;
 }
 
 .tips:after {
@@ -101,25 +101,27 @@ body {
     z-index: 999;
     color: #fff;
     left: 0;
-    transition:  all ease .2s;
+    transition: all ease .2s;
     opacity: 0;
-    background: rgba(0,0,0,0.7);
+    background: rgba(0, 0, 0, 0.7);
 }
+
 .tips:before {
     content: "";
-    border-color:  transparent transparent rgba(0,0,0,0.7) transparent;
+    border-color: transparent transparent rgba(0, 0, 0, 0.7) transparent;
     border-width: 5px;
     visibility: hidden;
     border-style: solid;
     position: absolute;
     bottom: -10px;
-    transition:  all ease .2s;
+    transition: all ease .2s;
     opacity: 0;
     left: 5px;
 }
+
 .tips:hover:after, .tips:hover:before {
     visibility: visible;
-    transition:  all ease .2s;
+    transition: all ease .2s;
     opacity: 1;
     display: block;
 }
@@ -129,19 +131,47 @@ body {
     left: 10px;
     right: 10px;
     position: absolute;
-    top: 50px;
-    bottom: 50px;
-    -webkit-box-sizing: border-box;
+    top: 65px;
+    bottom: 85px;
     overflow: auto;
 }
 
 .chat-panel {
     position: absolute;
     bottom: 0px;
-    height: 50px;
+    height: 85px;
     border-top: #ddd 1px solid;
     width: auto;
     background: #f4f4f6;
+}
+
+.input-panel {
+    height: 35px;
+    background: #f1f1f1;
+    padding: 0 20px;
+    border-bottom: 1px solid #ddd;
+}
+
+.input-panel ul {
+    width: auto;
+    float: left;
+    margin: 0;
+    padding: 0;
+}
+
+.input-panel ul li {
+    color: #999;
+    font-size: 18px;
+    float: left;
+    list-style: none;
+    line-height: 35px;
+    cursor: pointer;
+    width: 35px;
+    text-align: center;
+}
+
+.input-panel ul li:hover {
+    color: #333;
 }
 
 .login {
@@ -256,41 +286,55 @@ body {
     left: 0;
     bottom: 0;
     height: 100%;
-    background: url(http://cdn.pcbeta.attachment.inimc.com/data/attachment/forum/201406/15/131327rb3yu6t2xzrvl63y.jpg);
+    background: url(http://www.bz55.com/uploads/allimg/140914/138-140914114459-50.jpg);
+}
 
+.chat-navigation:before {
+    content: "";
+    background: rgba(0, 0, 0, 0.2);
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
 }
 
 .menu {
-    margin: 20px 0;
+    margin: 0 0 20px 0;
 }
+
 .menu ul {
     padding: 0;
-    margin:0;
+    margin: 0;
 }
+
 .menu ul li {
     float: left;
     width: 100%;
-    height: 90px;
-    vertical-align:  middle;
-    color: rgba(255,255,255,0.5);
-    font-size:  48px;
-    padding: 20px 0;
-    text-align:  center;
+    height: 70px;
+    vertical-align: middle;
+    color: rgba(255, 255, 255, 0.5);
+    font-size: 24px;
+    padding: 20px 0 26px 0;
+    text-align: center;
     transition: all ease .2s;
+    cursor: pointer;
     position: relative;
 }
 
 .menu ul li:hover {
-    color: rgba(255,255,255,1);
+    color: rgba(255, 255, 255, 1);
     transition: all ease .2s;
 }
+
 .menu ul li span {
     position: relative;
     z-index: 9;
 }
+
 .menu ul li:after {
     content: "";
-    background: rgba(0,0,0,0.3);
+
     width: 0%;
     position: absolute;
     left: 0;
@@ -302,7 +346,7 @@ body {
 
 .menu ul li:hover:after {
     content: "";
-    background: rgba(0,0,0,0.3);
+    background: rgba(0, 0, 0, .3);
     width: 100%;
     position: absolute;
     left: 0;
@@ -310,4 +354,10 @@ body {
     z-index: 1;
     height: 100%;
     transition: all ease .2s;
+}
+
+.bottom-menu {
+    width: 90px;
+    position: absolute;
+    bottom: 0;
 }

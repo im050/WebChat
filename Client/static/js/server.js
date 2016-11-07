@@ -4,7 +4,7 @@
  * @constructor
  */
 
-var Server = function(websocket_uri) {
+var Server = function (websocket_uri) {
 
     this.websocket = null;
     this.websocket_uri = websocket_uri;
@@ -12,14 +12,14 @@ var Server = function(websocket_uri) {
 
 }
 
-Server.prototype.connection = function() {
+Server.prototype.connection = function () {
 
     var _server = this;
 
     if (this.websocket == null)
         this.websocket = new WebSocket(this.websocket_uri);
 
-    this.websocket.onmessage = function(event){
+    this.websocket.onmessage = function (event) {
         var data = {};
         try {
             data = JSON.parse(event.data);
@@ -37,8 +37,8 @@ Server.prototype.connection = function() {
 
 }
 
-Server.prototype.on = function(method, callback) {
-    switch(method) {
+Server.prototype.on = function (method, callback) {
+    switch (method) {
         case 'open':
             this.websocket.onopen = callback;
             break;
@@ -55,7 +55,7 @@ Server.prototype.on = function(method, callback) {
     }
 }
 
-Server.prototype.bindRecvHandler = function(method_name, callback, forceUpdate) {
+Server.prototype.bindRecvHandler = function (method_name, callback, forceUpdate) {
 
     if (forceUpdate == null)
         forceUpdate = false;
@@ -69,6 +69,6 @@ Server.prototype.bindRecvHandler = function(method_name, callback, forceUpdate) 
 
 }
 
-Server.prototype.send = function(message) {
+Server.prototype.send = function (message) {
     this.websocket.send(message);
 }

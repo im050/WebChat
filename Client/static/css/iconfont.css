@@ -1,8 +1,8 @@
 .icon {
-    width: 1em; height: 1em;
+    width: 1em;
+    height: 1em;
     vertical-align: -0.15em;
     fill: currentColor;
-
     overflow: hidden;
 }
 
@@ -12,9 +12,9 @@
 
 @font-face {
     font-family: 'iconfont';  /* project id："174931" */
-    src: url('//at.alicdn.com/t/font_39mla6lbrb1yk3xr.eot');
-    src: url('//at.alicdn.com/t/font_39mla6lbrb1yk3xr.eot') format('embedded-opentype'),
-    url('//at.alicdn.com/t/font_39mla6lbrb1yk3xr.woff') format('woff'),
-    url('//at.alicdn.com/t/font_39mla6lbrb1yk3xr.ttf') format('truetype'),
-    url('//at.alicdn.com/t/font_39mla6lbrb1yk3xr.svg#iconfont') format('svg');
+    src: url('//at.alicdn.com/t/font_ydc4c95kqy8n0zfr.eot');
+    src: url('//at.alicdn.com/t/font_ydc4c95kqy8n0zfr.eot') format('embedded-opentype'),
+    url('//at.alicdn.com/t/font_ydc4c95kqy8n0zfr.woff') format('woff'),
+    url('//at.alicdn.com/t/font_ydc4c95kqy8n0zfr.ttf') format('truetype'),
+    url('//at.alicdn.com/t/font_ydc4c95kqy8n0zfr.svg#iconfont') format('svg');
 }

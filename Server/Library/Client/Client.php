@@ -7,6 +7,7 @@
 namespace Client;
 
 
+use Server\MainServer;
 use Storages\ClientStorage;
 
 class Client
@@ -31,11 +32,7 @@ class Client
      */
     private $fd = 0;
 
-    /**
-     * 主通信服务
-     * @var \Server\MainServer
-     */
-    private $server;
+    private $server = null;
 
     /**
      * 客户端用户
@@ -54,8 +51,9 @@ class Client
      * @param string $client_id 文件描述符
      * @param \Server\MainServer $server 主服务器
      */
-    public function __construct($client_id, $server) {
-        $this->server = $server;
+    public function __construct($client_id)
+    {
+        $this->server = MainServer::getInstance();
         $this->client_id = $client_id;
         $this->fd = $client_id;
         $this->room_id = 1;
@@ -66,7 +64,8 @@ class Client
      * 获得客户端状态
      * @return int
      */
-    public function getClientStatus() {
+    public function getClientStatus()
+    {
         return $this->client_status;
     }
 
@@ -74,7 +73,8 @@ class Client
      * 设置客户端状态
      * @param $status
      */
-    public function setClientStatus($status) {
+    public function setClientStatus($status)
+    {
         $this->client_status = $status;
     }
 
@@ -82,7 +82,8 @@ class Client
      * 获得主服务的websocket_server
      * @return null|\swoole_websocket_server
      */
-    public function getServer() {
+    public function getServer()
+    {
         return $this->server->getServer();
     }
 
@@ -90,7 +91,8 @@ class Client
      * 发送数据
      * @param array $object
      */
-    public function writeObject($object) {
+    public function writeObject($object)
+    {
         $string = json_encode($object);
         $this->write($string);
     }
@@ -99,10 +101,11 @@ class Client
      * 发送数据
      * @param string $string
      */
-    public function write($string) {
+    public function write($string)
+    {
         try {
             $this->getServer()->push($this->fd, $string);
-        }catch (\Exception $e) {
+        } catch (\Exception $e) {
             print_ln("FD:[{$this->fd}] 发送消息失败.");
         }
     }
@@ -111,11 +114,13 @@ class Client
      * 广播消息
      * @param string $string
      */
-    public function broadcast($string, $excludeFd = array()) {
+    public function broadcast($string, $excludeFd = array())
+    {
         $this->server->broadcast($string, $excludeFd);
     }
 
-    public function broadcastRoom($room_id, $string, $excludeFd = array()) {
+    public function broadcastRoom($room_id, $string, $excludeFd = array())
+    {
         $this->server->broadcastRoom($room_id, $string, $excludeFd);
     }
 
@@ -123,7 +128,8 @@ class Client
      * 设置用户
      * @param User $user
      */
-    public function setUser(User $user) {
+    public function setUser(User $user)
+    {
         $this->user = $user;
     }
 
@@ -131,15 +137,18 @@ class Client
      * 获取当前客户端对应用户
      * @return User
      */
-    public function getUser() {
+    public function getUser()
+    {
         return $this->user;
     }
 
-    public function getRoomId() {
+    public function getRoomId()
+    {
         return $this->room_id;
     }
 
-    public function setRoomId($room_id) {
+    public function setRoomId($room_id)
+    {
         $this->room_id = $room_id;
     }
 
@@ -147,19 +156,22 @@ class Client
      * 更新ClientStorage里的Client
      * @return boolean
      */
-    public function save() {
+    public function save()
+    {
         $cs = ClientStorage::getInstance();
         return $cs->update($this);
     }
 
-    public function __set($name, $value) {
+    public function __set($name, $value)
+    {
         if (isset($this->$name))
             $this->$name = $value;
         else
             throw new \Exception("Set attributes failed.");
     }
 
-    public function __get($name) {
+    public function __get($name)
+    {
         if (isset($this->$name)) {
             return $this->$name;
         }

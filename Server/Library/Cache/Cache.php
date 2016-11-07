@@ -8,7 +8,8 @@ class Cache
     protected static $_instance = null;
 
 
-    public static function init() {
+    public static function init()
+    {
         if (self::$_instance == null) {
             $driver = self::$_driver;
             self::$_instance = $driver::getInstance();

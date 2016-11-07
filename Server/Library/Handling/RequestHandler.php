@@ -24,9 +24,10 @@ class RequestHandler
     /**
      * 分段处理HTTP请求
      */
-    public function handleRequest() {
+    public function handleRequest()
+    {
         $route = strtolower(trim($this->request->server['request_uri'], '/'));
-        switch($route) {
+        switch ($route) {
             //绑定客户端信息
             case 'bind':
                 var_dump($this->server);
@@ -37,7 +38,7 @@ class RequestHandler
                 $recordData = ($recordStorage->range());
                 $callback = $this->request->get['callback'];
                 $html = '[';
-                foreach($recordData as $val) {
+                foreach ($recordData as $val) {
                     $html .= $val . ",";
                 }
                 $html = rtrim($html, ",");

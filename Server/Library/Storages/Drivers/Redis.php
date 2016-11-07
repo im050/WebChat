@@ -23,7 +23,8 @@ class Redis
         $this->_connection = RedisConnection::getInstance('storage');
     }
 
-    public static function getInstance($name) {
+    public static function getInstance($name)
+    {
         if (!isset(self::$_instance[$name])) {
             self::$_instance[$name] = new self($name);
         }
@@ -31,15 +32,18 @@ class Redis
         return self::$_instance[$name];
     }
 
-    public function push($value) {
+    public function push($value)
+    {
         return $this->_connection->sadd($this->_storage_key, $value);
     }
 
-    public function del($value, $count = 0) {
+    public function del($value, $count = 0)
+    {
         return $this->_connection->srem($this->_storage_key, $value);
     }
 
-    public function all() {
+    public function all()
+    {
         return $this->_connection->smembers($this->_storage_key);
     }
 

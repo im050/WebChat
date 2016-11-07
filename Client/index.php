@@ -17,17 +17,25 @@
 </head>
 <body>
 <section class="chat-navigation">
-    <div class="menu">
+    <div class="menu top-menu">
         <ul>
-            <li><span class="icon iconfont">&#xe90b;</span></li>
+            <li><span class="icon iconfont">&#xe6b8;</span></li>
+            <li><span class="icon iconfont">&#xe6ac;</span></li>
+            <li><span class="icon iconfont">&#xe69b;</span> </li>
+        </ul>
+    </div>
+    <div class="menu bottom-menu">
+        <ul>
+            <li><span class="icon iconfont">&#xe6ae;</span></li>
+            <li><span class="icon iconfont">&#xe699;</span></li>
         </ul>
     </div>
 </section>
 <div class="top-bar">
-    Hello Memory
+    Memory WebChat
 </div>
 <div class="side-bar" id="online-list">
-    <h4>Users<span>(当前房间在线人数: {{ user_count }})</span></h4>
+    <h4>Users<span>(Online: {{ user_count }} people)</span></h4>
     <ul class="online-list" >
         <li v-for="user in users" class="tips" :data-content="user.nickchen">
             <img :src="user.avatar" width="42" height="42" />
@@ -52,6 +60,14 @@
     </div>
     <div class="clearfix"></div>
     <div class="chat-panel ">
+        <div class="input-panel">
+            <ul>
+                <li><span class="icon iconfont">&#xe61d;</span></li>
+                <li><span class="icon iconfont">&#xe694;</span></li>
+                <li><span class="icon iconfont">&#xe619;</span></li>
+                <li><span class="icon iconfont">&#xe632;</span></li>
+            </ul>
+        </div>
         <div class="message-input input-group">
             <input type="text" name="msg" class="form-control">
             <span class="input-group-btn">

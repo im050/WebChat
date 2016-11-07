@@ -31,10 +31,10 @@ $(function () {
     });
 
     //回车发送事件
-    $("input[name=msg]").keypress(function(event){
-       if (event.keyCode == 13) {
-           $("[name=send]").click();
-       }
+    $("input[name=msg]").keypress(function (event) {
+        if (event.keyCode == 13) {
+            $("[name=send]").click();
+        }
     });
 
     //登录按钮事件绑定

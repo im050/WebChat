@@ -73,9 +73,9 @@ Chat = function (options) {
         });
 
         //有用户退出
-        this.server.bindRecvHandler('user_logout', function(data){
+        this.server.bindRecvHandler('user_logout', function (data) {
             var list = onlineList.$data.users;
-            for(var i = 0; i<list.length; i++) {
+            for (var i = 0; i < list.length; i++) {
                 var user = list[i];
                 if (user.user_id == data.user_id) {
                     onlineList.$data.users.splice(i, 1);
@@ -108,7 +108,7 @@ Chat = function (options) {
             onlineList.$data.user_count = data.length;
         });
 
-        this.server.bindRecvHandler('pop_message', function(data){
+        this.server.bindRecvHandler('pop_message', function (data) {
             alert(data.message);
         });
 
@@ -122,7 +122,7 @@ Chat = function (options) {
             }, 5000);
         });
 
-        this.server.on("close", function(evt){
+        this.server.on("close", function (evt) {
             storage.clear();
             alert("服务器把你踹下去了!");
         });

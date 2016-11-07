@@ -17,18 +17,20 @@ class User
     public function __construct($object = null)
     {
         if (!empty($object)) {
-            $data = (array) $object;
-            foreach($data as $key=>$val) {
+            $data = (array)$object;
+            foreach ($data as $key => $val) {
                 $this->$key = $val;
             }
         }
     }
 
-    public function __set($name, $value) {
+    public function __set($name, $value)
+    {
         $this->$name = $value;
     }
 
-    public function __get($name) {
+    public function __get($name)
+    {
         return $this->$name;
     }
 

@@ -15,7 +15,8 @@ class Config
     private static $config = [];
     private static $map = [];
 
-    public static function get($key, $default = '') {
+    public static function get($key, $default = '')
+    {
 
         if (isset(self::$map[$key])) {
             return self::$map[$key];
@@ -32,7 +33,8 @@ class Config
         }
     }
 
-    public static function createMap($key) {
+    public static function createMap($key)
+    {
         if (strpos($key, ".") === FALSE) {
             throw new Exception("Config: the parameter lose '.'");
         }
@@ -45,7 +47,7 @@ class Config
         }
 
         $value = self::$config;
-        foreach($key as $val) {
+        foreach ($key as $val) {
             if (isset($value[$val])) {
                 $value = $value[$val];
             } else {
@@ -55,11 +57,12 @@ class Config
         }
 
         if ($value != null)
-            self::$map[implode(".",$key)] = $value;
+            self::$map[implode(".", $key)] = $value;
         return $value;
     }
 
-    public static function loadConfig($type) {
+    public static function loadConfig($type)
+    {
         $file = ROOT_PATH . 'Includes/Config/' . $type . ".php";
         if (!file_exists($file)) {
             throw new Exception("Config: load config file failed.\r\nFile: {$file}");
