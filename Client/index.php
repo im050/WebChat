@@ -9,6 +9,7 @@
     <meta name="apple-mobile-web-app-capable" content="yes"/>
     <meta name="viewport" content="width=device-width, initial-scale=1.0,  minimum-scale=1.0, maximum-scale=1.0"/>
     <script src="//cdn.bootcss.com/jquery/3.1.1/jquery.min.js"></script>
+    <script src="static/js/jquery.nicescroll.min.js"></script>
     <link href="//cdn.bootcss.com/bootstrap/4.0.0-alpha.3/css/bootstrap.min.css" rel="stylesheet"/>
     <link href="static/css/style.css" rel="stylesheet"/>
     <link href="static/css/iconfont.css" rel="stylesheet"/>
@@ -19,22 +20,75 @@
 <section class="chat-navigation">
     <div class="menu top-menu">
         <ul>
-            <li><span class="icon iconfont">&#xe6b8;</span></li>
-            <li><span class="icon iconfont">&#xe6ac;</span></li>
-            <li><span class="icon iconfont">&#xe69b;</span> </li>
+            <!-- user -->
+            <li id="menu_user"><span class="icon iconfont">&#xe6b8;</span></li>
+            <!-- search -->
+            <li id="menu_search">
+                <span class="icon iconfont">&#xe6ac;</span>
+
+            </li>
+            <!-- message -->
+            <li id="menu_message">
+                <span class="icon iconfont">&#xe69b;</span>
+                <span class="number-tip">1</span>
+            </li>
         </ul>
     </div>
     <div class="menu bottom-menu">
         <ul>
-            <li><span class="icon iconfont">&#xe6ae;</span></li>
-            <li><span class="icon iconfont">&#xe699;</span></li>
+            <!-- setting -->
+            <li id="menu_setting"><span class="icon iconfont">&#xe6ae;</span></li>
+            <!-- list -->
+            <li id="menu_list"><span class="icon iconfont">&#xe699;</span></li>
         </ul>
     </div>
 </section>
 <div class="top-bar">
     Memory WebChat
 </div>
-<div class="side-bar" id="online-list">
+<!-- sidebar -->
+<div class="sidebar" id="menu_list_sidebar">
+    <div class="sidebar-layer">
+        <div id="room-list">
+111111111
+        </div>
+    </div>
+</div>
+
+<div class="sidebar" id="menu_setting_sidebar">
+    <div class="sidebar-layer">
+        <div id="room-list">
+22222222
+        </div>
+    </div>
+</div>
+
+<div class="sidebar" id="menu_message_sidebar">
+    <div class="sidebar-layer">
+        <div id="room-list">
+33333333
+        </div>
+    </div>
+</div>
+
+<div class="sidebar" id="menu_user_sidebar">
+    <div class="sidebar-layer">
+        <div id="room-list">
+44444444
+        </div>
+    </div>
+</div>
+
+<div class="sidebar" id="menu_search_sidebar">
+    <div class="sidebar-layer">
+        <div id="room-list">
+5555555
+        </div>
+    </div>
+</div>
+
+<!-- online users -->
+<div class="online-panel" id="online-list">
     <h4>Users<span>(Online: {{ user_count }} people)</span></h4>
     <ul class="online-list" >
         <li v-for="user in users" class="tips" :data-content="user.nickchen">
@@ -42,8 +96,9 @@
         </li>
     </ul>
 </div>
+<!-- main content -->
 <div class="warp">
-
+    <!-- chat message -->
     <div class="chat">
         <ul id="msg_list" class="message-list">
             <li v-for="msg in list" :class="{ owner : isOwner(msg.user_id) }">
@@ -59,6 +114,7 @@
         </ul>
     </div>
     <div class="clearfix"></div>
+    <!-- for user to send message -->
     <div class="chat-panel ">
         <div class="input-panel">
             <ul>
@@ -76,6 +132,7 @@
         </div>
     </div>
 </div>
+<!-- login container -->
 <div class="login">
     <form name="login_form" method="post" action="login.php">
         <p><input placeholder="username" type="text" class="form-control" name="username"></p>
@@ -85,6 +142,7 @@
         <p><input type="button" name="login_btn" class="btn btn-primary" value="Login"/></p>
     </form>
 </div>
+<!-- scripts -->
 <script src="static/js/server.js"></script>
 <script src="static/js/chat.js"></script>
 <script src="static/js/common.js"></script>

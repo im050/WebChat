@@ -72,6 +72,21 @@ $(function () {
     }
 
     //
+    $(".menu ul li").click(function(){
+        var id = $(this).attr('id');
+        var elementId = "#" + id + "_sidebar";
+        if ($(elementId).width() <= 0) {
+            $(".sidebar").width(0);
+            $(elementId).width(300);
+        } else {
+            $(".sidebar").width(0);
+        }
+    })
+
+    $(".chat").niceScroll({
+        cursorcolor: "rgba(0,0,0,0.3)",
+        cursorborder: "none"
+    });
 
 
 });
