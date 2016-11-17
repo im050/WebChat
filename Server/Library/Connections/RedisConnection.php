@@ -6,6 +6,7 @@
  */
 namespace Connections;
 
+use Server\MainServer;
 use Utils\Config;
 
 class RedisConnection
@@ -15,12 +16,8 @@ class RedisConnection
 
     public $redis = null;
 
-    private function __construct($name = 'default')
+    private function __construct($host, $port)
     {
-
-        $host = Config::get('redis.' . $name . '.host', Config::get('redis.default.host'));
-        $port = Config::get('redis.' . $name . '.port', Config::get('redis.default.port'));
-
         $this->redis = new \Redis();
         if ($this->redis->connect($host, $port))
             return TRUE;
@@ -31,7 +28,16 @@ class RedisConnection
     public static function getInstance($name = 'default')
     {
         if (!isset(self::$instance[$name])) {
-            self::$instance[$name] = new self($name);
+            $host = Config::get('redis.' . $name . '.host', '');
+            $port = Config::get('redis.' . $name . '.port', '');
+
+            if (empty($host)) {
+                return self::getInstance();
+            }
+
+            $server = MainServer::getInstance();
+            print_ln("进程 [" . $server->getServer()->worker_id . "] 建立 Redis[{$name}] 连接");
+            self::$instance[$name] = new self($host, $port);
         }
         return self::$instance[$name]->redis;
     }

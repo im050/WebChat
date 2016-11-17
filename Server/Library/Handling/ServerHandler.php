@@ -79,6 +79,7 @@ class ServerHandler
                 'time' => time()
             );
             $finalMessage = $packet->receiveMessage($frame);
+            //将信息存放到redis
             $recordStorage->push($finalMessage);
             $this->client->broadcastRoom($this->client->getRoomId(), $finalMessage);
         }
@@ -158,7 +159,6 @@ class ServerHandler
                     'fd' => $this->client->fd,
                     'user_id' => $payload->user_id
                 ));
-
                 $this->client->broadcast($user_login);//, array($this->client->fd));
                 print_ln("WorkerID [{$server->worker_id}]: " . $fdInfo['remote_ip'] . ":" . $fdInfo['remote_port'] . " 用户 [{$payload->username}] 登录了服务器");
             }

@@ -33,10 +33,12 @@ class RequestHandler
                 var_dump($this->server);
                 break;
             case 'record':
-                $id = $this->request->get['room_id'];
+                print_ln("进程 [".$this->server->worker_id."] 读取聊天记录");
+                //sleep(1);
+                $id = isset($this->request->get['room_id']) ? $this->request->get['room_id'] : 1;
                 $recordStorage = RecordStorage::getInstance($id);
                 $recordData = ($recordStorage->range());
-                $callback = $this->request->get['callback'];
+                $callback = isset($this->request->get['callback']) ? $this->request->get['callback'] : '';
                 $html = '[';
                 foreach ($recordData as $val) {
                     $html .= $val . ",";

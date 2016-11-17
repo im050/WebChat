@@ -104,7 +104,14 @@ class Client
     public function write($string)
     {
         try {
-            $this->getServer()->push($this->fd, $string);
+            //改用Task
+            $data = [];
+            $data['task_type'] = 'send';
+            $data['fd'] = $this->fd;
+            //print_ln("data[fd] = " . $this->fd);
+            $data['message_packet'] = $string;
+            $this->getServer()->task($data);
+            //$this->getServer()->push($this->fd, $string);
         } catch (\Exception $e) {
             print_ln("FD:[{$this->fd}] 发送消息失败.");
         }

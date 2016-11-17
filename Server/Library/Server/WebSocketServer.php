@@ -6,7 +6,7 @@
  */
 namespace Server;
 
-use \swoole_websocket_server;
+use swoole_websocket_server;
 use Utils\Config;
 
 class WebSocketServer
@@ -33,6 +33,8 @@ class WebSocketServer
         $this->server->on('Close', array($this, 'onClose'));
         $this->server->on('Request', array($this, 'onRequest'));
         $this->server->on('WorkerStart', array($this, 'onWorkerStart'));
+        $this->server->on('Task', array($this, 'onTask'));
+        $this->server->on('Finish', array($this, 'onTaskFinish'));
 
     }
 
@@ -62,6 +64,16 @@ class WebSocketServer
     }
 
     public function onWorkerStart($server, $worker_id)
+    {
+
+    }
+
+    public function onTask($server, $task_id, $from_id, $data)
+    {
+
+    }
+
+    public function onTaskFinish($server, $task_id, $data)
     {
 
     }

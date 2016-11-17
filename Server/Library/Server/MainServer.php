@@ -7,13 +7,13 @@
 
 namespace Server;
 
+use Cache\Cache;
+use Client\Client;
 use Connections\RedisConnection;
 use Handling\RequestHandler;
 use Handling\ServerHandler;
-use Client\Client;
 use Storages\ClientStorage;
 use Utils\Config;
-use Cache\Cache;
 use Utils\PacketCreator;
 
 class MainServer extends WebSocketServer
@@ -47,6 +47,52 @@ class MainServer extends WebSocketServer
         return self::$_instance;
     }
 
+    public function onTask($server, $task_id, $from_id, $data)
+    {
+        switch ($data['task_type']) {
+            case "broadcast":
+                $excludeFd = $data['exclude_fd'];
+                $string = $data['message_packet'];
+                foreach ($this->server->connections as $fd) {
+                    if ($this->isWebsocket($fd)) {
+                        if (in_array($fd, $excludeFd)) {
+                            continue;
+                        }
+                        $this->server->push($fd, $string);
+                    }
+                }
+                break;
+            case "broadcast_room":
+                $room_id = $data['room_id'];
+                $excludeFd = $data['exclude_fd'];
+                $string = $data['message_packet'];
+                $clientStorage = ClientStorage::getInstance($room_id);
+                $fdList = $clientStorage->allFd();
+                foreach ($fdList as $fd) {
+                    if ($this->isWebsocket($fd)) {
+                        if (in_array($fd, $excludeFd))
+                            continue;
+                        $this->server->push($fd, $string);
+                    }
+                }
+                break;
+            case "send":
+                //print_r($data);
+                $fd = $data['fd'];
+                $message_packet = $data['message_packet'];
+                if ($this->isWebsocket($fd)) {
+                    $this->server->push($fd, $message_packet);
+                }
+                break;
+        }
+        //$this->server->finish("finish!");
+    }
+
+    public function onTaskFinish($server, $task_id, $data)
+    {
+
+    }
+
     /**
      * socket连接事件
      * 握手成功后触发该事件
@@ -57,7 +103,7 @@ class MainServer extends WebSocketServer
     public function onOpen($server, $request)
     {
         $fd = $request->fd;
-        if ($this->is_websocket($fd)) {
+        if ($this->isWebsocket($fd)) {
             $fdInfo = $this->server->connection_info($fd);
             $this->clients[$fd] = new Client($fd);
             $clientStorage = ClientStorage::getInstance(1);
@@ -89,7 +135,7 @@ class MainServer extends WebSocketServer
      */
     public function onClose($server, $fd)
     {
-        if ($this->is_websocket($fd)) {
+        if ($this->isWebsocket($fd)) {
             $clientStorage = ClientStorage::getInstance(1);
             $client = $clientStorage->get($fd);
             if ($client != null) {
@@ -122,7 +168,7 @@ class MainServer extends WebSocketServer
      * @param $fd
      * @return bool
      */
-    public function is_websocket($fd)
+    public function isWebsocket($fd)
     {
         $fdInfo = $this->server->connection_info($fd);
         return ($fdInfo['websocket_status'] == WEBSOCKET_STATUS_FRAME);
@@ -145,14 +191,11 @@ class MainServer extends WebSocketServer
      */
     public function broadcast($string, $excludeFd = array())
     {
-        foreach ($this->server->connections as $fd) {
-            if ($this->is_websocket($fd)) {
-                if (in_array($fd, $excludeFd)) {
-                    continue;
-                }
-                $this->server->push($fd, $string);
-            }
-        }
+        $data = [];
+        $data['task_type'] = 'broadcast';
+        $data['message_packet'] = $string;
+        $data['exclude_fd'] = $excludeFd;
+        $this->server->task($data);
     }
 
     /**
@@ -164,15 +207,12 @@ class MainServer extends WebSocketServer
      */
     public function broadcastRoom($room_id, $string, $excludeFd = array())
     {
-        $clientStorage = ClientStorage::getInstance($room_id);
-        $fd_list = $clientStorage->allFd();
-        foreach ($fd_list as $fd) {
-            if ($this->is_websocket($fd)) {
-                if (in_array($fd, $excludeFd))
-                    continue;
-                $this->server->push($fd, $string);
-            }
-        }
+        $data = [];
+        $data['task_type'] = "broadcast_room";
+        $data['room_id'] = $room_id;
+        $data['message_packet'] = $string;
+        $data['exclude_fd'] = $excludeFd;
+        $this->server->task($data);
     }
 
     /**
