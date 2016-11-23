@@ -3,13 +3,15 @@ var storage = window.localStorage;
 $(function () {
 
     var recordUrl = 'http://localhost:8888/record/';
+    var roomsUrl = 'http://localhost:8888/rooms/';
     var websocket_uri = 'ws://127.0.0.1:8888';
 
 
     //初始化聊天室
     var chat = new Chat({
         'url': websocket_uri,
-        'record_url': recordUrl
+        'record_url': recordUrl,
+        'rooms_url': roomsUrl
     });
 
     chat.init();

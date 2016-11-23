@@ -7,8 +7,9 @@
 namespace Handling;
 
 
+use Connections\DatabaseConnection;
 use Storages\RecordStorage;
-
+use \PDO;
 class RequestHandler
 {
 
@@ -47,7 +48,39 @@ class RequestHandler
                 $html .= "]";
                 $this->response->end($callback . "(" . $html . ")");
                 break;
-            default;
+            case 'rooms':
+                $db = DatabaseConnection::getInstance();
+                $sql = "SELECT * FROM wc_rooms";
+                $stmt = $db->prepare($sql);
+                $stmt->execute();
+                $result = $stmt->fetchAll(PDO::FETCH_ASSOC);
+                $this->ajaxReturn($result, 'jsonp');
+                break;
+            case 'test':
+                //print_r($this->request);
+                print_ln("WorkerID: " . $this->server->worker_id . " FD: " . $this->request->fd);
+                //sleep(1);
+                break;
+        }
+    }
+
+    public function ajaxReturn($data, $type = 'json') {
+        if (!is_string($data)) {
+            $data = json_encode($data);
+        }
+        switch($type) {
+            case 'json':
+                $this->response->end($data);
+                break;
+            case 'jsonp':
+                $callback = isset($this->request->get['callback']) ? $this->request->get['callback'] : '';
+                if ($callback == '') {
+                    $this->response->end("{msg:\"参数错误\"}");
+                } else {
+
+                    $this->response->end($callback . "(" . $data . ")");
+                }
+                break;
         }
     }
 }

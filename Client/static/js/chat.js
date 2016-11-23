@@ -53,6 +53,8 @@ Chat = function (options) {
      * 初始化过程
      */
     this.init = function () {
+        //加载房间
+        this.loadRooms();
         this.screen = $(this.options.mlc_id).parent();
         var _this = this;
         //建立服务器
@@ -126,6 +128,7 @@ Chat = function (options) {
             storage.clear();
             alert("服务器把你踹下去了!");
         });
+
 
 
     };
@@ -251,6 +254,32 @@ Chat = function (options) {
             },
             error: function (e) {
                 console.log(e);
+            }
+        });
+    }
+
+
+
+    this.loadRooms = function() {
+        var _this = this;
+        $.ajax({
+            url: this.options.rooms_url,
+            dataType: 'jsonp',
+            type: 'get',
+            success: function (rooms) {
+               // console.log(rooms);
+               // console.log("yes");
+                var rooms = new Vue({
+                    el: '#room_list',
+                    data: {
+                        rooms: rooms
+                    },
+                    methods: {
+                        changeRoom: function(room_id) {
+                            alert(room_id);
+                        }
+                    }
+                });
             }
         });
     }

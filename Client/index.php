@@ -66,7 +66,7 @@
 <div class="sidebar" id="menu_message_sidebar">
     <div class="sidebar-layer">
         <div id="room-list">
-33333333
+<a href="javascript:alert('点我')">点我Click</a>
         </div>
     </div>
 </div>
@@ -81,8 +81,13 @@
 
 <div class="sidebar" id="menu_search_sidebar">
     <div class="sidebar-layer">
-        <div id="room-list">
-5555555
+        <div>
+            <a href="http://www.baidu.com/">哈哈是</a>
+            <ul id="room_list">
+                <li v-for="room in rooms">
+                    {{ room.room_name }} <a href="javascript://" v-on:click="changeRoom(room.id)" >[进入]</a>
+                </li>
+            </ul>
         </div>
     </div>
 </div>
@@ -118,7 +123,7 @@
     <div class="chat-panel ">
         <div class="input-panel">
             <ul>
-                <li><span class="icon iconfont">&#xe61d;</span></li>
+                <li><span class="icon iconfont"><a href="javascript:alert('click me')">&#xe61d;</a></span></li>
                 <li><span class="icon iconfont">&#xe694;</span></li>
                 <li><span class="icon iconfont">&#xe619;</span></li>
                 <li><span class="icon iconfont">&#xe632;</span></li>

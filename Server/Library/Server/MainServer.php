@@ -9,6 +9,7 @@ namespace Server;
 
 use Cache\Cache;
 use Client\Client;
+use Connections\DatabaseConnection;
 use Connections\RedisConnection;
 use Handling\RequestHandler;
 use Handling\ServerHandler;
@@ -240,8 +241,10 @@ class MainServer extends WebSocketServer
      */
     public function onWorkerStart($server, $worker_id)
     {
-        print_ln("进程 [{$worker_id}] 启动成功.");
+        print_ln("进程 [{$worker_id}] 正在启动...");
         Cache::init();
+        print_ln("初始化缓存模块...");
+        DatabaseConnection::getInstance();
         if ($worker_id == 0) {
             print_ln("正在清空缓存数据...");
             $redis = RedisConnection::getInstance();
@@ -255,6 +258,7 @@ class MainServer extends WebSocketServer
             }
             print_ln("缓存数据清空完毕...");
         }
+        print_ln("进程 [{$worker_id}] 启动完毕.");
     }
 
 
@@ -263,8 +267,7 @@ class MainServer extends WebSocketServer
      */
     public function start()
     {
-        print_ln("服务端启动成功...");
-        print_ln("监听端口: {$this->port}");
+        print_ln("服务端正在启动...");
         parent::start();
     }
 }
