@@ -36,7 +36,7 @@ class RedisConnection
             }
 
             $server = MainServer::getInstance();
-            print_ln("进程 [" . $server->getServer()->worker_id . "] 建立 Redis[{$name}] 连接");
+            log_message("进程 [" . $server->getServer()->worker_id . "] 建立 Redis[{$name}] 连接");
             self::$instance[$name] = new self($host, $port);
         }
         return self::$instance[$name]->redis;

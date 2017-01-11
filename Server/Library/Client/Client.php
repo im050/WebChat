@@ -49,7 +49,6 @@ class Client
     /**
      * Client constructor.
      * @param string $client_id 文件描述符
-     * @param \Server\MainServer $server 主服务器
      */
     public function __construct($client_id)
     {
@@ -108,12 +107,12 @@ class Client
             $data = [];
             $data['task_type'] = 'send';
             $data['fd'] = $this->fd;
-            //print_ln("data[fd] = " . $this->fd);
+            //log_message("data[fd] = " . $this->fd);
             $data['message_packet'] = $string;
             $this->getServer()->task($data);
             //$this->getServer()->push($this->fd, $string);
         } catch (\Exception $e) {
-            print_ln("FD:[{$this->fd}] 发送消息失败.");
+            log_message("FD:[{$this->fd}] 发送消息失败.");
         }
     }
 
@@ -157,6 +156,14 @@ class Client
     public function setRoomId($room_id)
     {
         $this->room_id = $room_id;
+    }
+
+    public function changeRoom($room_id) {
+        $cs = ClientStorage::getInstance($this->room_id);
+        if ($cs->changeRoom($this->fd, $room_id)) {
+            $this->setRoomId($room_id);
+            $this->save();
+        }
     }
 
     /**

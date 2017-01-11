@@ -64,7 +64,7 @@ class Config
     public static function loadConfig($type)
     {
         $file = ROOT_PATH . 'Includes/Config/' . $type . ".php";
-        print_ln("[{$type}] 配置文件加载");
+        log_message("[{$type}] 配置文件加载");
         if (!file_exists($file)) {
             throw new Exception("Config: load config file failed.\r\nFile: {$file}");
         }

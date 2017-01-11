@@ -40,7 +40,7 @@ class DatabaseConnection
                 PDO::MYSQL_ATTR_INIT_COMMAND => 'SET NAMES utf8',
             );
             $server = MainServer::getInstance();
-            print_ln("进程 [" . $server->getServer()->worker_id . "] 建立 Database[{$name}] 连接");
+            log_message("进程 [" . $server->getServer()->worker_id . "] 建立 Database[{$name}] 连接");
             self::$instance[$name] = new self($dsn, $username, $password, $options);
         }
         return self::$instance[$name]->db;

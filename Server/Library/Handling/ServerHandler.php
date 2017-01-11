@@ -32,8 +32,18 @@ class ServerHandler
         if (method_exists($this, $method)) {
             return $this->$method($content);
         } else {
+            log_message("不存在的数据分析方法:" . $type);
             return false;
         }
+    }
+
+    protected function _ping() {
+        return true;
+    }
+
+    protected function _change_room($content) {
+        $room_id = $content->room_id;
+        $this->client->changeRoom($room_id);
     }
 
     /**
@@ -63,7 +73,7 @@ class ServerHandler
             $this->client->write($packet->make('pop_message', array('message' => '命令执行成功!')));
             return;
         }
-        $recordStorage = RecordStorage::getInstance(1);
+        $record_storage = RecordStorage::getInstance(1);
         if ($this->client->getClientStatus() == 0) {
             $this->client->write($packet->setType('error')->setErrorCode('UNLOGIN')->toJSON());
         } else {
@@ -80,7 +90,7 @@ class ServerHandler
             );
             $finalMessage = $packet->receiveMessage($frame);
             //将信息存放到redis
-            $recordStorage->push($finalMessage);
+            $record_storage->push($finalMessage);
             $this->client->broadcastRoom($this->client->getRoomId(), $finalMessage);
         }
     }
@@ -94,8 +104,8 @@ class ServerHandler
     {
         $packet = $this->packet;
         $packet->clear();
-        $clientStorage = ClientStorage::getInstance(1);
-        $clients = $clientStorage->all();
+        $client_storage = ClientStorage::getInstance(1);
+        $clients = $client_storage->all();
         $data = [];
         foreach ($clients as $client) {
             $user = $client->getUser();
@@ -128,14 +138,14 @@ class ServerHandler
             if (isset($payload->exp) && time() > $payload->exp) {
                 $msg = $packet->make('login', array('status' => false, 'msg' => '授权过期,请重新登录.'));
             } else {
-                $clientStorage = ClientStorage::getInstance();
+                $client_storage = ClientStorage::getInstance();
                 //判断该用户是否登录状态
-                if (($fd = $clientStorage->isLogin($payload->user_id)) !== FALSE) {
+                if (($fd = $client_storage->isLogin($payload->user_id)) !== FALSE) {
                     $this->client->getServer()->push($fd, $packet->make('pop_message', array('message' => '您的账号在别处登录.')));
                     $this->client->getServer()->close($fd);
                 }
                 //设置登录标记
-                $clientStorage->setLogin($payload->user_id, $this->client->fd);
+                $client_storage->setLogin($payload->user_id, $this->client->fd);
                 $this->client->setClientStatus(1);
                 $this->client->setUser(new User($payload));
                 //加入房间1
@@ -151,7 +161,7 @@ class ServerHandler
                 $msg = $packet->make('login', $data);
                 $server = $this->client->getServer();
                 $fd = $this->client->fd;
-                $fdInfo = $server->connection_info($fd);
+                $fd_info = $server->connection_info($fd);
                 //登录成功,通知所有人
                 $user_login = $packet->make('user_login', array(
                     'nickchen' => $payload->nickchen,
@@ -160,7 +170,7 @@ class ServerHandler
                     'user_id' => $payload->user_id
                 ));
                 $this->client->broadcast($user_login);//, array($this->client->fd));
-                print_ln("WorkerID [{$server->worker_id}]: " . $fdInfo['remote_ip'] . ":" . $fdInfo['remote_port'] . " 用户 [{$payload->username}] 登录了服务器");
+                log_message("WorkerID [{$server->worker_id}]: " . $fd_info['remote_ip'] . ":" . $fd_info['remote_port'] . " 用户 [{$payload->username}] 登录了服务器");
             }
         } else {
             $msg = $packet->make('login', array('status' => false, 'msg' => '授权错误!'));
@@ -182,17 +192,25 @@ class ServerHandler
         $this->frame = $frame;
         $data = $frame->data;
         $data = json_decode($data);
-        $type = $data->type;
-        if (!isset($data->content))
-            $content = '';
-        else
-            $content = $data->content;
-        $this->handlePacket($type, $content);
+        if ($data == null) {
+            log_message("接收到非法的数据:" . $frame->data);
+            return;
+        }
+        if (isset($data->type)) {
+            $type = $data->type;
+            if (!isset($data->content))
+                $content = '';
+            else
+                $content = $data->content;
+            $this->handlePacket($type, $content);
+        } else {
+            log_message("接收到未知的json数据");
+        }
     }
 
     public function __destruct()
     {
-        //print_ln("消息处理完毕!");
+        //log_message("消息处理完毕!");
         // TODO: Implement __destruct() method.
     }
 

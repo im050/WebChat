@@ -68,8 +68,8 @@ class MainServer extends WebSocketServer
                 $excludeFd = $data['exclude_fd'];
                 $string = $data['message_packet'];
                 $clientStorage = ClientStorage::getInstance($room_id);
-                $fdList = $clientStorage->allFd();
-                foreach ($fdList as $fd) {
+                $fd_list = $clientStorage->allFd();
+                foreach ($fd_list as $fd) {
                     if ($this->isWebsocket($fd)) {
                         if (in_array($fd, $excludeFd))
                             continue;
@@ -78,7 +78,6 @@ class MainServer extends WebSocketServer
                 }
                 break;
             case "send":
-                //print_r($data);
                 $fd = $data['fd'];
                 $message_packet = $data['message_packet'];
                 if ($this->isWebsocket($fd)) {
@@ -86,7 +85,6 @@ class MainServer extends WebSocketServer
                 }
                 break;
         }
-        //$this->server->finish("finish!");
     }
 
     public function onTaskFinish($server, $task_id, $data)
@@ -105,11 +103,11 @@ class MainServer extends WebSocketServer
     {
         $fd = $request->fd;
         if ($this->isWebsocket($fd)) {
-            $fdInfo = $this->server->connection_info($fd);
+            $fd_info = $this->server->connection_info($fd);
             $this->clients[$fd] = new Client($fd);
             $clientStorage = ClientStorage::getInstance(1);
             $clientStorage->push($this->clients[$fd]);
-            print_ln("WorkerID [{$server->worker_id}]: " . $fdInfo['remote_ip'] . ":" . $fdInfo['remote_port'] . " Connection.");
+            log_message("WorkerID [{$server->worker_id}]: " . $fd_info['remote_ip'] . ":" . $fd_info['remote_port'] . " Connection.");
         }
     }
 
@@ -148,15 +146,15 @@ class MainServer extends WebSocketServer
                             'user_id' => $user->user_id
                         )), array($client->fd));
                     } catch (\Exception $e) {
-                        print_ln("session closed.");
+                        log_message("session closed.");
                     }
                     $clientStorage->logout($user->user_id, $fd);
                     $username = $client->getUser()->username;
-                    print_ln("WorkerID [{$server->worker_id}]: 用户 [{$username}] 断开连接...");
+                    log_message("WorkerID [{$server->worker_id}]: 用户 [{$username}] 断开连接...");
                 } else {
                     $clientStorage->remove($fd);
-                    $fdInfo = $this->server->connection_info($fd);
-                    print_ln("WorkerID [{$server->worker_id}]: " . $fdInfo['remote_ip'] . ":" . $fdInfo['remote_port'] . " 断开连接");
+                    $fd_info = $this->server->connection_info($fd);
+                    log_message("WorkerID [{$server->worker_id}]: " . $fd_info['remote_ip'] . ":" . $fd_info['remote_port'] . " 断开连接");
                 }
             }
         }
@@ -171,8 +169,8 @@ class MainServer extends WebSocketServer
      */
     public function isWebsocket($fd)
     {
-        $fdInfo = $this->server->connection_info($fd);
-        return ($fdInfo['websocket_status'] == WEBSOCKET_STATUS_FRAME);
+        $fd_info = $this->server->connection_info($fd);
+        return ($fd_info['websocket_status'] == WEBSOCKET_STATUS_FRAME);
     }
 
     /**
@@ -241,12 +239,12 @@ class MainServer extends WebSocketServer
      */
     public function onWorkerStart($server, $worker_id)
     {
-        print_ln("进程 [{$worker_id}] 正在启动...");
+        log_message("进程 [{$worker_id}] 正在启动...");
         Cache::init();
-        print_ln("初始化缓存模块...");
+        log_message("初始化缓存模块...");
         DatabaseConnection::getInstance();
         if ($worker_id == 0) {
-            print_ln("正在清空缓存数据...");
+            log_message("正在清空缓存数据...");
             $redis = RedisConnection::getInstance();
             $redis->setOption(\Redis::OPT_SCAN, \Redis::SCAN_RETRY);
             while (($keys = $redis->scan($it, '', 1000))) {
@@ -256,9 +254,9 @@ class MainServer extends WebSocketServer
                     }
                 }
             }
-            print_ln("缓存数据清空完毕...");
+            log_message("缓存数据清空完毕...");
         }
-        print_ln("进程 [{$worker_id}] 启动完毕.");
+        log_message("进程 [{$worker_id}] 启动完毕.");
     }
 
 
@@ -267,7 +265,11 @@ class MainServer extends WebSocketServer
      */
     public function start()
     {
-        print_ln("服务端正在启动...");
-        parent::start();
+        try {
+            log_message("服务端正在启动...");
+            parent::start();
+        } catch(Exception $e) {
+            die($e->getMessage());
+        }
     }
 }

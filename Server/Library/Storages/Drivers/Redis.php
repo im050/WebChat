@@ -47,4 +47,8 @@ class Redis
         return $this->_connection->smembers($this->_storage_key);
     }
 
+    public function smove($source, $destination, $member) {
+        return $this->_connection->smove($source, $destination, $member);
+    }
+
 }

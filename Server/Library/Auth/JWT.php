@@ -2,8 +2,6 @@
 namespace Auth;
 /**
  * JWT
- *
- * @author: memory<service@im050.com>
  */
 class JWT
 {
@@ -62,7 +60,6 @@ class JWT
         //根据payload计算的签名
         $valid_signature = JWT::sign($output, $key, $algo);
         return $jwt_signature == $valid_signature;
-
     }
 
     /**

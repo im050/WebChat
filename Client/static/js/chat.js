@@ -276,7 +276,12 @@ Chat = function (options) {
                     },
                     methods: {
                         changeRoom: function(room_id) {
-                            alert(room_id);
+                            _this.sendMessage({
+                                'type':'change_room',
+                                'content':{
+                                    'room_id':room_id
+                                }
+                            })
                         }
                     }
                 });

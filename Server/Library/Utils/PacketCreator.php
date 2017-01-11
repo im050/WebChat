@@ -23,7 +23,7 @@ class PacketCreator
      */
     public function toJSON()
     {
-        return json_encode($this->attributes);
+        return json_encode($this->attributes, JSON_UNESCAPED_UNICODE);
     }
 
     /**

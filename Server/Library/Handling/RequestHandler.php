@@ -34,14 +34,14 @@ class RequestHandler
                 var_dump($this->server);
                 break;
             case 'record':
-                print_ln("进程 [".$this->server->worker_id."] 读取聊天记录");
+                log_message("进程 [".$this->server->worker_id."] 读取聊天记录");
                 //sleep(1);
                 $id = isset($this->request->get['room_id']) ? $this->request->get['room_id'] : 1;
-                $recordStorage = RecordStorage::getInstance($id);
-                $recordData = ($recordStorage->range());
+                $record_storage = RecordStorage::getInstance($id);
+                $record_data = ($record_storage->range());
                 $callback = isset($this->request->get['callback']) ? $this->request->get['callback'] : '';
                 $html = '[';
-                foreach ($recordData as $val) {
+                foreach ($record_data as $val) {
                     $html .= $val . ",";
                 }
                 $html = rtrim($html, ",");
@@ -57,9 +57,7 @@ class RequestHandler
                 $this->ajaxReturn($result, 'jsonp');
                 break;
             case 'test':
-                //print_r($this->request);
-                print_ln("WorkerID: " . $this->server->worker_id . " FD: " . $this->request->fd);
-                //sleep(1);
+                log_message("WorkerID: " . $this->server->worker_id . " FD: " . $this->request->fd);
                 break;
         }
     }
