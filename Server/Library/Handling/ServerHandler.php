@@ -44,6 +44,7 @@ class ServerHandler
     protected function _change_room($content) {
         $room_id = $content->room_id;
         $this->client->changeRoom($room_id);
+        $this->client->save();
     }
 
     /**
@@ -88,10 +89,10 @@ class ServerHandler
                 'user_id' => $this->client->getUser()->user_id,
                 'time' => time()
             );
-            $finalMessage = $packet->receiveMessage($frame);
+            $final_message = $packet->receiveMessage($frame);
             //将信息存放到redis
-            $record_storage->push($finalMessage);
-            $this->client->broadcastRoom($this->client->getRoomId(), $finalMessage);
+            $record_storage->push($final_message);
+            $this->client->broadcastRoom($this->client->getRoomId(), $final_message);
         }
     }
 

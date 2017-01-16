@@ -110,6 +110,11 @@ Chat = function (options) {
             onlineList.$data.user_count = data.length;
         });
 
+        //更换房间
+        this.server.bindRecvHandler('change_room', function(data){
+            console.log("切换房间成功");
+        });
+
         this.server.bindRecvHandler('pop_message', function (data) {
             alert(data.message);
         });
@@ -257,8 +262,6 @@ Chat = function (options) {
             }
         });
     }
-
-
 
     this.loadRooms = function() {
         var _this = this;

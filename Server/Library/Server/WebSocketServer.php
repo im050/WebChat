@@ -40,42 +40,42 @@ class WebSocketServer
 
     public function onOpen($server, $request)
     {
-
+        log_message('未调用 onOpen ...');
     }
 
     public function onMessage($server, $frame)
     {
-
+        log_message('未调用 onMessage ...');
     }
 
     public function onClose($server, $fd)
     {
-
+        log_message('未调用 onClose ...');
     }
 
     public function onTimer($server, $interval)
     {
-
+        log_message('未调用 onTimer ...');
     }
 
     public function onRequest($request, $response)
     {
-
+        log_message('未调用 onRequest ...');
     }
 
     public function onWorkerStart($server, $worker_id)
     {
-
+        log_message('未调用 onWorkerStart ...');
     }
 
     public function onTask($server, $task_id, $from_id, $data)
     {
-
+        log_message('未调用 onTask ...');
     }
 
     public function onTaskFinish($server, $task_id, $data)
     {
-
+        log_message('未调用 onTaskFinish ...');
     }
 
     public function getServer()

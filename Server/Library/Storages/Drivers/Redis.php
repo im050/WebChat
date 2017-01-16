@@ -37,7 +37,7 @@ class Redis
         return $this->_connection->sadd($this->_storage_key, $value);
     }
 
-    public function del($value, $count = 0)
+    public function del($value)
     {
         return $this->_connection->srem($this->_storage_key, $value);
     }

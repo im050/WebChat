@@ -120,14 +120,14 @@ class Client
      * 广播消息
      * @param string $string
      */
-    public function broadcast($string, $excludeFd = array())
+    public function broadcast($string, $exclude_fd = array())
     {
-        $this->server->broadcast($string, $excludeFd);
+        $this->server->broadcast($string, $exclude_fd);
     }
 
-    public function broadcastRoom($room_id, $string, $excludeFd = array())
+    public function broadcastRoom($room_id, $string, $exclude_fd = array())
     {
-        $this->server->broadcastRoom($room_id, $string, $excludeFd);
+        $this->server->broadcastRoom($room_id, $string, $exclude_fd);
     }
 
     /**

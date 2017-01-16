@@ -52,11 +52,11 @@ class MainServer extends WebSocketServer
     {
         switch ($data['task_type']) {
             case "broadcast":
-                $excludeFd = $data['exclude_fd'];
+                $exclude_fd = $data['exclude_fd'];
                 $string = $data['message_packet'];
                 foreach ($this->server->connections as $fd) {
                     if ($this->isWebsocket($fd)) {
-                        if (in_array($fd, $excludeFd)) {
+                        if (in_array($fd, $exclude_fd)) {
                             continue;
                         }
                         $this->server->push($fd, $string);
@@ -65,13 +65,13 @@ class MainServer extends WebSocketServer
                 break;
             case "broadcast_room":
                 $room_id = $data['room_id'];
-                $excludeFd = $data['exclude_fd'];
+                $exclude_fd = $data['exclude_fd'];
                 $string = $data['message_packet'];
-                $clientStorage = ClientStorage::getInstance($room_id);
-                $fd_list = $clientStorage->allFd();
+                $client_storage = ClientStorage::getInstance($room_id);
+                $fd_list = $client_storage->allFd();
                 foreach ($fd_list as $fd) {
                     if ($this->isWebsocket($fd)) {
-                        if (in_array($fd, $excludeFd))
+                        if (in_array($fd, $exclude_fd))
                             continue;
                         $this->server->push($fd, $string);
                     }
@@ -105,8 +105,8 @@ class MainServer extends WebSocketServer
         if ($this->isWebsocket($fd)) {
             $fd_info = $this->server->connection_info($fd);
             $this->clients[$fd] = new Client($fd);
-            $clientStorage = ClientStorage::getInstance(1);
-            $clientStorage->push($this->clients[$fd]);
+            $client_storage = ClientStorage::getInstance(1);
+            $client_storage->push($this->clients[$fd]);
             log_message("WorkerID [{$server->worker_id}]: " . $fd_info['remote_ip'] . ":" . $fd_info['remote_port'] . " Connection.");
         }
     }
@@ -135,8 +135,8 @@ class MainServer extends WebSocketServer
     public function onClose($server, $fd)
     {
         if ($this->isWebsocket($fd)) {
-            $clientStorage = ClientStorage::getInstance(1);
-            $client = $clientStorage->get($fd);
+            $client_storage = ClientStorage::getInstance(1);
+            $client = $client_storage->get($fd);
             if ($client != null) {
                 $user = $client->getUser();
                 if ($user != null) {
@@ -148,11 +148,11 @@ class MainServer extends WebSocketServer
                     } catch (\Exception $e) {
                         log_message("session closed.");
                     }
-                    $clientStorage->logout($user->user_id, $fd);
+                    $client_storage->logout($user->user_id, $fd);
                     $username = $client->getUser()->username;
                     log_message("WorkerID [{$server->worker_id}]: 用户 [{$username}] 断开连接...");
                 } else {
-                    $clientStorage->remove($fd);
+                    $client_storage->remove($fd);
                     $fd_info = $this->server->connection_info($fd);
                     log_message("WorkerID [{$server->worker_id}]: " . $fd_info['remote_ip'] . ":" . $fd_info['remote_port'] . " 断开连接");
                 }
@@ -188,12 +188,12 @@ class MainServer extends WebSocketServer
      *
      * @param $string
      */
-    public function broadcast($string, $excludeFd = array())
+    public function broadcast($string, $exclude_fd = array())
     {
         $data = [];
         $data['task_type'] = 'broadcast';
         $data['message_packet'] = $string;
-        $data['exclude_fd'] = $excludeFd;
+        $data['exclude_fd'] = $exclude_fd;
         $this->server->task($data);
     }
 
@@ -202,15 +202,15 @@ class MainServer extends WebSocketServer
      *
      * @param $room_id
      * @param $string
-     * @param array $excludeFd
+     * @param array $exclude_fd
      */
-    public function broadcastRoom($room_id, $string, $excludeFd = array())
+    public function broadcastRoom($room_id, $string, $exclude_fd = array())
     {
         $data = [];
         $data['task_type'] = "broadcast_room";
         $data['room_id'] = $room_id;
         $data['message_packet'] = $string;
-        $data['exclude_fd'] = $excludeFd;
+        $data['exclude_fd'] = $exclude_fd;
         $this->server->task($data);
     }
 
@@ -226,8 +226,8 @@ class MainServer extends WebSocketServer
         if (strpos($request->server['request_uri'], '.ico') !== FALSE) {
             return;
         }
-        $requestHandler = new RequestHandler($this->server, $request, $response);
-        $requestHandler->handleRequest();
+        $request_handler = new RequestHandler($this->server, $request, $response);
+        $request_handler->handleRequest();
     }
 
     /**

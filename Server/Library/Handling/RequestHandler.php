@@ -35,7 +35,6 @@ class RequestHandler
                 break;
             case 'record':
                 log_message("进程 [".$this->server->worker_id."] 读取聊天记录");
-                //sleep(1);
                 $id = isset($this->request->get['room_id']) ? $this->request->get['room_id'] : 1;
                 $record_storage = RecordStorage::getInstance($id);
                 $record_data = ($record_storage->range());
