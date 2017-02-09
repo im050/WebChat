@@ -1,6 +1,12 @@
 # WebChat
 ## 基于Swoole扩展+WebSocket开发的聊天室DEMO
-> 支持聊天记录, 重复登录判断,
+> 支持聊天记录, 重复登录判断
+
+### 依赖
+
++ PHP >= 5.5
++ Swoole >= 1.8+
++ MsgPack extension
 
 ### 更新记录:
 #### 2016.11.20
