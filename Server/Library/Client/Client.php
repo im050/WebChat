@@ -9,6 +9,7 @@ namespace Client;
 
 use Server\MainServer;
 use Storages\ClientStorage;
+use Cache\Cache;
 
 class Client
 {
@@ -56,6 +57,10 @@ class Client
         $this->client_id = $client_id;
         $this->fd = $client_id;
         $this->room_id = 1;
+    }
+
+    public static function get($fd) {
+        return msgpack_unpack(Cache::get('client_' . $fd));
     }
 
 
@@ -160,10 +165,7 @@ class Client
 
     public function changeRoom($room_id) {
         $cs = ClientStorage::getInstance($this->room_id);
-        if ($cs->changeRoom($this->fd, $room_id)) {
-            $this->setRoomId($room_id);
-            $this->save();
-        }
+        $cs->changeRoom($this, $room_id);
     }
 
     /**
@@ -172,7 +174,7 @@ class Client
      */
     public function save()
     {
-        $cs = ClientStorage::getInstance();
+        $cs = ClientStorage::getInstance($this->room_id);
         return $cs->update($this);
     }
 

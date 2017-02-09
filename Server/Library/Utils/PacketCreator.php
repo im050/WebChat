@@ -50,6 +50,15 @@ class PacketCreator
         return $this->toJSON();
     }
 
+    public function error($message, $error_code = 0) {
+        $this->attributes['type'] = 'error';
+        $this->attributes['content'] = array(
+            'error_code' => $error_code,
+            'message' => $message
+        );
+        return $this->toJSON();
+    }
+
     /**
      * 链式设置属性
      * @param $name

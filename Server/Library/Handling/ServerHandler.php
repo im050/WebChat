@@ -41,10 +41,15 @@ class ServerHandler
         return true;
     }
 
+    /**
+     * 切换频道
+     *
+     * @param $content
+     */
     protected function _change_room($content) {
         $room_id = $content->room_id;
         $this->client->changeRoom($room_id);
-        $this->client->save();
+        log_message("用户 " . $this->client->user->username . " 切换频道 [{$room_id}]");
     }
 
     /**
@@ -74,7 +79,7 @@ class ServerHandler
             $this->client->write($packet->make('pop_message', array('message' => '命令执行成功!')));
             return;
         }
-        $record_storage = RecordStorage::getInstance(1);
+        $record_storage = RecordStorage::getInstance($this->client->room_id);
         if ($this->client->getClientStatus() == 0) {
             $this->client->write($packet->setType('error')->setErrorCode('UNLOGIN')->toJSON());
         } else {
@@ -103,9 +108,16 @@ class ServerHandler
      */
     protected function _online_list($content)
     {
+
         $packet = $this->packet;
         $packet->clear();
-        $client_storage = ClientStorage::getInstance(1);
+
+        if (!isset($content->room_id)) {
+            $msg = $packet->error("请求在线列表错误");
+            $this->client->write($msg);
+        }
+
+        $client_storage = ClientStorage::getInstance($content->room_id);
         $clients = $client_storage->all();
         $data = [];
         foreach ($clients as $client) {
@@ -139,7 +151,7 @@ class ServerHandler
             if (isset($payload->exp) && time() > $payload->exp) {
                 $msg = $packet->make('login', array('status' => false, 'msg' => '授权过期,请重新登录.'));
             } else {
-                $client_storage = ClientStorage::getInstance();
+                $client_storage = ClientStorage::getInstance(1);
                 //判断该用户是否登录状态
                 if (($fd = $client_storage->isLogin($payload->user_id)) !== FALSE) {
                     $this->client->getServer()->push($fd, $packet->make('pop_message', array('message' => '您的账号在别处登录.')));

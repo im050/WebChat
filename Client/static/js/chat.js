@@ -95,7 +95,9 @@ Chat = function (options) {
                 //更新用户信息
                 _this.setUser(data.user.user_id, data.user.nickchen);
                 //请求在线列表
-                _this.sendMessage({type: 'online_list'});
+                _this.sendMessage({type: 'online_list', content: {
+                   room_id : 1
+                }});
                 $(".login").fadeOut();
             } else {
                 //alert("登录失败,请重新登录!");
@@ -111,7 +113,7 @@ Chat = function (options) {
         });
 
         //更换房间
-        this.server.bindRecvHandler('change_room', function(data){
+        this.server.bindRecvHandler('change_room', function (data) {
             console.log("切换房间成功");
         });
 
@@ -129,11 +131,12 @@ Chat = function (options) {
             }, 5000);
         });
 
-        this.server.on("close", function (evt) {
-            storage.clear();
-            alert("服务器把你踹下去了!");
-        });
-
+        /*
+         this.server.on("close", function (evt) {
+         storage.clear();
+         alert("服务器把你踹下去了!");
+         });
+         */
 
 
     };
@@ -195,6 +198,7 @@ Chat = function (options) {
      * @param room_id
      */
     this.loadMessageRecord = function (room_id) {
+        console.log(room_id);
         var _this = this;
         $.ajax({
             url: this.options.record_url,
@@ -228,7 +232,7 @@ Chat = function (options) {
      * @param token
      */
     this.loginServer = function (token) {
-        this.server.send(JSON.stringify({type: 'login', content: {access_token: token}}));
+        this.server.send(JSON.stringify({type: 'login', content: {access_token: token, room_id: 1}}));
     };
 
     /**
@@ -263,28 +267,37 @@ Chat = function (options) {
         });
     }
 
-    this.loadRooms = function() {
+    this.loadRooms = function () {
         var _this = this;
         $.ajax({
             url: this.options.rooms_url,
             dataType: 'jsonp',
             type: 'get',
             success: function (rooms) {
-               // console.log(rooms);
-               // console.log("yes");
+                // console.log(rooms);
+                // console.log("yes");
                 var rooms = new Vue({
                     el: '#room_list',
                     data: {
                         rooms: rooms
                     },
                     methods: {
-                        changeRoom: function(room_id) {
+                        changeRoom: function (room_id) {
                             _this.sendMessage({
-                                'type':'change_room',
-                                'content':{
-                                    'room_id':room_id
+                                'type': 'change_room',
+                                'content': {
+                                    'room_id': room_id
                                 }
-                            })
+                            });
+                            //请求在线列表
+                            _this.sendMessage({
+                                type: 'online_list',
+                                content: {
+                                    'room_id': room_id
+                                }
+                            });
+                            //请求聊天记录
+                            _this.loadMessageRecord(room_id);
                         }
                     }
                 });

@@ -26,10 +26,12 @@ class ClientStorage
         $this->_room_id = $room_id;
         if ($this->_online_fd == NULL) {
             $this->_online_fd = Storage::getInstance($this->getName());
+            log_message("Current Init Client : " . $this->getName());
         }
     }
 
-    public function getName($room_id = '') {
+    public function getName($room_id = '')
+    {
         if (empty($room_id))
             $room_id = $this->_room_id;
         return $this->_prefix . $room_id;
@@ -38,7 +40,7 @@ class ClientStorage
     public static function getInstance($room_id = 1)
     {
         if (!isset(self::$_instance[$room_id])) {
-            self::$_instance[$room_id] = new self($room_id = 1);
+            self::$_instance[$room_id] = new self($room_id);
         }
         return self::$_instance[$room_id];
     }
@@ -51,9 +53,11 @@ class ClientStorage
             $client_keys[] = "client_{$fd}";
         }
         $clients = Cache::getMulti($client_keys);
-        array_walk($clients, function (&$val) {
-            $val = msgpack_unpack($val);
-        });
+        if ($clients) {
+            array_walk($clients, function (&$val) {
+                $val = msgpack_unpack($val);
+            });
+        }
         return $clients;
     }
 
@@ -69,9 +73,14 @@ class ClientStorage
         Cache::set('client_' . $fd, msgpack_pack($client));
     }
 
-    public function changeRoom($fd, $room_id) {
-        $source = $this->getName();
+    public function changeRoom(Client $client, $room_id)
+    {
+        $fd = $client->fd;
+        $source_room_id = $client->room_id;
+        $client->room_id = $room_id;
+        $source = $this->getName($source_room_id);
         $destination = $this->getName($room_id);
+        $this->update($client);
         $this->_online_fd->smove($source, $destination, $fd);
     }
 

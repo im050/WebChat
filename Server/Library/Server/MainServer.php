@@ -67,6 +67,7 @@ class MainServer extends WebSocketServer
                 $room_id = $data['room_id'];
                 $exclude_fd = $data['exclude_fd'];
                 $string = $data['message_packet'];
+                log_message($room_id);
                 $client_storage = ClientStorage::getInstance($room_id);
                 $fd_list = $client_storage->allFd();
                 foreach ($fd_list as $fd) {
@@ -135,8 +136,9 @@ class MainServer extends WebSocketServer
     public function onClose($server, $fd)
     {
         if ($this->isWebsocket($fd)) {
-            $client_storage = ClientStorage::getInstance(1);
-            $client = $client_storage->get($fd);
+            $client = Client::get($fd);
+            $room_id = $client->room_id;
+            $client_storage = ClientStorage::getInstance($room_id);
             if ($client != null) {
                 $user = $client->getUser();
                 if ($user != null) {
